@@ -1,0 +1,657 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		ABF208D40093DDE3FEAA8761 /* Pods_iGongdong.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6F3D75F31543880F85216ED /* Pods_iGongdong.framework */; };
+		C099B148BDB59210D943124B /* Pods_iGongdongTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB0AF309C625DB59B0BA882 /* Pods_iGongdongTests.framework */; };
+		EC2911C7250B355300E61269 /* SetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2911C6250B355300E61269 /* SetView.swift */; };
+		EC2911C9250B431600E61269 /* LoginToService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2911C8250B431600E61269 /* LoginToService.swift */; };
+		EC33A47E2515C66700DCC8FB /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC33A47D2515C66700DCC8FB /* Utils.swift */; };
+		EC62F8412518CF6B00452C93 /* CommentWrite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC62F8402518CF6B00452C93 /* CommentWrite.swift */; };
+		EC62F8472518D8BD00452C93 /* String+Extionsion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC62F8462518D8BD00452C93 /* String+Extionsion.swift */; };
+		EC7FF16C251A0CB20020E1CE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7FF16B251A0CB20020E1CE /* SceneDelegate.swift */; };
+		EC86FCDB24A754A400E2D337 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86FCDA24A754A400E2D337 /* AppDelegate.swift */; };
+		EC86FCE224A754A400E2D337 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC86FCE024A754A400E2D337 /* Main.storyboard */; };
+		EC86FCE424A754A400E2D337 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC86FCE324A754A400E2D337 /* Assets.xcassets */; };
+		EC86FCE724A754A400E2D337 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC86FCE524A754A400E2D337 /* LaunchScreen.storyboard */; };
+		EC86FCF224A754A500E2D337 /* iGongdongTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86FCF124A754A500E2D337 /* iGongdongTests.swift */; };
+		EC86FCFD24A78EE800E2D337 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86FCFC24A78EE800E2D337 /* MainView.swift */; };
+		ECA7C1A8250D12C50036D825 /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA7C1A7250D12C50036D825 /* ItemView.swift */; };
+		ECC42FF0250F09BB006E9F67 /* RecentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC42FEF250F09BB006E9F67 /* RecentView.swift */; };
+		ECC42FF2250F1CA6006E9F67 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC42FF1250F1CA6006E9F67 /* LinkView.swift */; };
+		ECC42FF4250F32D6006E9F67 /* ArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC42FF3250F32D6006E9F67 /* ArticleView.swift */; };
+		ECCB6F64251B5EC900DCEF71 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCB6F63251B5EC900DCEF71 /* AboutView.swift */; };
+		ECD7FF4124F6B78D0008F0F3 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7FF4024F6B78D0008F0F3 /* BoardView.swift */; };
+		ECD9B71224ECB40B00B1B978 /* HttpSessionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9B71124ECB40B00B1B978 /* HttpSessionRequest.swift */; };
+		ECD9B71624ECC1A700B1B978 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9B71524ECC1A700B1B978 /* AppData.swift */; };
+		ECD9B71824ED007300B1B978 /* GlobalConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9B71724ED007300B1B978 /* GlobalConst.swift */; };
+		ECDA63BA2519AEAB0053B8A1 /* DBInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDA63B92519AEAB0053B8A1 /* DBInterface.swift */; };
+		ECF7BB862511E19E0081AE5B /* ArticleWrite.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF7BB852511E19E0081AE5B /* ArticleWrite.swift */; };
+		ECF7BB882512EFE50081AE5B /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF7BB872512EFE50081AE5B /* KeyboardObserver.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EC86FCEE24A754A500E2D337 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EC86FCCF24A754A400E2D337 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EC86FCD624A754A400E2D337;
+			remoteInfo = iMooojigae;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		27D582DD4B6D511C0054F676 /* Pods-iGongdong.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iGongdong.debug.xcconfig"; path = "Target Support Files/Pods-iGongdong/Pods-iGongdong.debug.xcconfig"; sourceTree = "<group>"; };
+		615BAEC4C74E824820D6B02E /* Pods-iGongdongTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iGongdongTests.release.xcconfig"; path = "Target Support Files/Pods-iGongdongTests/Pods-iGongdongTests.release.xcconfig"; sourceTree = "<group>"; };
+		76D67F426C2CDAB809BA4227 /* Pods-iGongdong.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iGongdong.release.xcconfig"; path = "Target Support Files/Pods-iGongdong/Pods-iGongdong.release.xcconfig"; sourceTree = "<group>"; };
+		A6F3D75F31543880F85216ED /* Pods_iGongdong.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iGongdong.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BAB0AF309C625DB59B0BA882 /* Pods_iGongdongTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iGongdongTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB8DAB0A82B64384C9B9DFAD /* Pods-iGongdongTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iGongdongTests.debug.xcconfig"; path = "Target Support Files/Pods-iGongdongTests/Pods-iGongdongTests.debug.xcconfig"; sourceTree = "<group>"; };
+		EC2911C6250B355300E61269 /* SetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetView.swift; sourceTree = "<group>"; };
+		EC2911C8250B431600E61269 /* LoginToService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginToService.swift; sourceTree = "<group>"; };
+		EC33A47D2515C66700DCC8FB /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		EC62F8402518CF6B00452C93 /* CommentWrite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentWrite.swift; sourceTree = "<group>"; };
+		EC62F8462518D8BD00452C93 /* String+Extionsion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extionsion.swift"; sourceTree = "<group>"; };
+		EC7FF15E251A09420020E1CE /* iGongdong.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iGongdong.entitlements; sourceTree = "<group>"; };
+		EC7FF16B251A0CB20020E1CE /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		EC86FCD724A754A400E2D337 /* iGongdong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iGongdong.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC86FCDA24A754A400E2D337 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EC86FCE124A754A400E2D337 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EC86FCE324A754A400E2D337 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EC86FCE624A754A400E2D337 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		EC86FCE824A754A400E2D337 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC86FCED24A754A500E2D337 /* iGongdongTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iGongdongTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC86FCF124A754A500E2D337 /* iGongdongTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iGongdongTests.swift; sourceTree = "<group>"; };
+		EC86FCF324A754A500E2D337 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC86FCFC24A78EE800E2D337 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		ECA7C1A7250D12C50036D825 /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
+		ECC42FEF250F09BB006E9F67 /* RecentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentView.swift; sourceTree = "<group>"; };
+		ECC42FF1250F1CA6006E9F67 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
+		ECC42FF3250F32D6006E9F67 /* ArticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleView.swift; sourceTree = "<group>"; };
+		ECCB6F63251B5EC900DCEF71 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		ECD7FF4024F6B78D0008F0F3 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		ECD9B71124ECB40B00B1B978 /* HttpSessionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpSessionRequest.swift; sourceTree = "<group>"; };
+		ECD9B71524ECC1A700B1B978 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
+		ECD9B71724ED007300B1B978 /* GlobalConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConst.swift; sourceTree = "<group>"; };
+		ECDA63B92519AEAB0053B8A1 /* DBInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBInterface.swift; sourceTree = "<group>"; };
+		ECF7BB852511E19E0081AE5B /* ArticleWrite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleWrite.swift; sourceTree = "<group>"; };
+		ECF7BB872512EFE50081AE5B /* KeyboardObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserver.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EC86FCD424A754A400E2D337 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABF208D40093DDE3FEAA8761 /* Pods_iGongdong.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EC86FCEA24A754A500E2D337 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C099B148BDB59210D943124B /* Pods_iGongdongTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		84FC078CDC83453115B155C7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A6F3D75F31543880F85216ED /* Pods_iGongdong.framework */,
+				BAB0AF309C625DB59B0BA882 /* Pods_iGongdongTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A940B6B5FAB958DD3057A03C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				27D582DD4B6D511C0054F676 /* Pods-iGongdong.debug.xcconfig */,
+				76D67F426C2CDAB809BA4227 /* Pods-iGongdong.release.xcconfig */,
+				BB8DAB0A82B64384C9B9DFAD /* Pods-iGongdongTests.debug.xcconfig */,
+				615BAEC4C74E824820D6B02E /* Pods-iGongdongTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		EC86FCCE24A754A400E2D337 = {
+			isa = PBXGroup;
+			children = (
+				EC86FCD924A754A400E2D337 /* iGongdong */,
+				EC86FCF024A754A500E2D337 /* iGongdongTests */,
+				EC86FCD824A754A400E2D337 /* Products */,
+				A940B6B5FAB958DD3057A03C /* Pods */,
+				84FC078CDC83453115B155C7 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		EC86FCD824A754A400E2D337 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EC86FCD724A754A400E2D337 /* iGongdong.app */,
+				EC86FCED24A754A500E2D337 /* iGongdongTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EC86FCD924A754A400E2D337 /* iGongdong */ = {
+			isa = PBXGroup;
+			children = (
+				ECCB6F63251B5EC900DCEF71 /* AboutView.swift */,
+				ECD9B71524ECC1A700B1B978 /* AppData.swift */,
+				EC86FCDA24A754A400E2D337 /* AppDelegate.swift */,
+				ECC42FF3250F32D6006E9F67 /* ArticleView.swift */,
+				ECF7BB852511E19E0081AE5B /* ArticleWrite.swift */,
+				EC86FCE324A754A400E2D337 /* Assets.xcassets */,
+				ECD7FF4024F6B78D0008F0F3 /* BoardView.swift */,
+				EC62F8402518CF6B00452C93 /* CommentWrite.swift */,
+				ECDA63B92519AEAB0053B8A1 /* DBInterface.swift */,
+				ECD9B71724ED007300B1B978 /* GlobalConst.swift */,
+				ECD9B71124ECB40B00B1B978 /* HttpSessionRequest.swift */,
+				EC7FF15E251A09420020E1CE /* iGongdong.entitlements */,
+				EC86FCE824A754A400E2D337 /* Info.plist */,
+				ECA7C1A7250D12C50036D825 /* ItemView.swift */,
+				ECF7BB872512EFE50081AE5B /* KeyboardObserver.swift */,
+				EC86FCE524A754A400E2D337 /* LaunchScreen.storyboard */,
+				ECC42FF1250F1CA6006E9F67 /* LinkView.swift */,
+				EC2911C8250B431600E61269 /* LoginToService.swift */,
+				EC86FCE024A754A400E2D337 /* Main.storyboard */,
+				EC86FCFC24A78EE800E2D337 /* MainView.swift */,
+				ECC42FEF250F09BB006E9F67 /* RecentView.swift */,
+				EC7FF16B251A0CB20020E1CE /* SceneDelegate.swift */,
+				EC2911C6250B355300E61269 /* SetView.swift */,
+				EC62F8462518D8BD00452C93 /* String+Extionsion.swift */,
+				EC33A47D2515C66700DCC8FB /* Utils.swift */,
+			);
+			path = iGongdong;
+			sourceTree = "<group>";
+		};
+		EC86FCF024A754A500E2D337 /* iGongdongTests */ = {
+			isa = PBXGroup;
+			children = (
+				EC86FCF124A754A500E2D337 /* iGongdongTests.swift */,
+				EC86FCF324A754A500E2D337 /* Info.plist */,
+			);
+			path = iGongdongTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EC86FCD624A754A400E2D337 /* iGongdong */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EC86FCF624A754A500E2D337 /* Build configuration list for PBXNativeTarget "iGongdong" */;
+			buildPhases = (
+				BC622ECA47D197B4ADAFEC52 /* [CP] Check Pods Manifest.lock */,
+				EC86FCD324A754A400E2D337 /* Sources */,
+				EC86FCD424A754A400E2D337 /* Frameworks */,
+				EC86FCD524A754A400E2D337 /* Resources */,
+				499E3A03793BB1BB63DF169F /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iGongdong;
+			productName = iMooojigae;
+			productReference = EC86FCD724A754A400E2D337 /* iGongdong.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EC86FCEC24A754A500E2D337 /* iGongdongTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EC86FCF924A754A500E2D337 /* Build configuration list for PBXNativeTarget "iGongdongTests" */;
+			buildPhases = (
+				391D37EABE0775E9C2AEBE09 /* [CP] Check Pods Manifest.lock */,
+				EC86FCE924A754A500E2D337 /* Sources */,
+				EC86FCEA24A754A500E2D337 /* Frameworks */,
+				EC86FCEB24A754A500E2D337 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EC86FCEF24A754A500E2D337 /* PBXTargetDependency */,
+			);
+			name = iGongdongTests;
+			productName = iMooojigaeTests;
+			productReference = EC86FCED24A754A500E2D337 /* iGongdongTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EC86FCCF24A754A400E2D337 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1150;
+				LastUpgradeCheck = 1150;
+				ORGANIZATIONNAME = dykim;
+				TargetAttributes = {
+					EC86FCD624A754A400E2D337 = {
+						CreatedOnToolsVersion = 11.5;
+						LastSwiftMigration = 1170;
+					};
+					EC86FCEC24A754A500E2D337 = {
+						CreatedOnToolsVersion = 11.5;
+						TestTargetID = EC86FCD624A754A400E2D337;
+					};
+				};
+			};
+			buildConfigurationList = EC86FCD224A754A400E2D337 /* Build configuration list for PBXProject "iGongdong" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EC86FCCE24A754A400E2D337;
+			productRefGroup = EC86FCD824A754A400E2D337 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EC86FCD624A754A400E2D337 /* iGongdong */,
+				EC86FCEC24A754A500E2D337 /* iGongdongTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EC86FCD524A754A400E2D337 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC86FCE724A754A400E2D337 /* LaunchScreen.storyboard in Resources */,
+				EC86FCE424A754A400E2D337 /* Assets.xcassets in Resources */,
+				EC86FCE224A754A400E2D337 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EC86FCEB24A754A500E2D337 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		391D37EABE0775E9C2AEBE09 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-iGongdongTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		499E3A03793BB1BB63DF169F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iGongdong/Pods-iGongdong-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iGongdong/Pods-iGongdong-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iGongdong/Pods-iGongdong-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BC622ECA47D197B4ADAFEC52 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-iGongdong-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EC86FCD324A754A400E2D337 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ECD7FF4124F6B78D0008F0F3 /* BoardView.swift in Sources */,
+				ECD9B71224ECB40B00B1B978 /* HttpSessionRequest.swift in Sources */,
+				ECDA63BA2519AEAB0053B8A1 /* DBInterface.swift in Sources */,
+				EC62F8412518CF6B00452C93 /* CommentWrite.swift in Sources */,
+				ECCB6F64251B5EC900DCEF71 /* AboutView.swift in Sources */,
+				EC86FCDB24A754A400E2D337 /* AppDelegate.swift in Sources */,
+				ECD9B71624ECC1A700B1B978 /* AppData.swift in Sources */,
+				EC86FCFD24A78EE800E2D337 /* MainView.swift in Sources */,
+				ECD9B71824ED007300B1B978 /* GlobalConst.swift in Sources */,
+				ECC42FF0250F09BB006E9F67 /* RecentView.swift in Sources */,
+				EC62F8472518D8BD00452C93 /* String+Extionsion.swift in Sources */,
+				EC33A47E2515C66700DCC8FB /* Utils.swift in Sources */,
+				ECF7BB862511E19E0081AE5B /* ArticleWrite.swift in Sources */,
+				ECA7C1A8250D12C50036D825 /* ItemView.swift in Sources */,
+				ECF7BB882512EFE50081AE5B /* KeyboardObserver.swift in Sources */,
+				EC2911C7250B355300E61269 /* SetView.swift in Sources */,
+				ECC42FF2250F1CA6006E9F67 /* LinkView.swift in Sources */,
+				EC7FF16C251A0CB20020E1CE /* SceneDelegate.swift in Sources */,
+				ECC42FF4250F32D6006E9F67 /* ArticleView.swift in Sources */,
+				EC2911C9250B431600E61269 /* LoginToService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EC86FCE924A754A500E2D337 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC86FCF224A754A500E2D337 /* iGongdongTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EC86FCEF24A754A500E2D337 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EC86FCD624A754A400E2D337 /* iGongdong */;
+			targetProxy = EC86FCEE24A754A500E2D337 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		EC86FCE024A754A400E2D337 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EC86FCE124A754A400E2D337 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		EC86FCE524A754A400E2D337 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EC86FCE624A754A400E2D337 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EC86FCF424A754A500E2D337 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EC86FCF524A754A500E2D337 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EC86FCF724A754A500E2D337 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 27D582DD4B6D511C0054F676 /* Pods-iGongdong.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = iMoojigae/iMoojigae.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0;
+				DEVELOPMENT_TEAM = 8PG9C7Q5V8;
+				INFOPLIST_FILE = "$(SRCROOT)/iGongdong/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 3.19.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.panicstyle.iGongdong;
+				PRODUCT_NAME = iGongdong;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		EC86FCF824A754A500E2D337 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 76D67F426C2CDAB809BA4227 /* Pods-iGongdong.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = iMoojigae/iMoojigae.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0;
+				DEVELOPMENT_TEAM = 8PG9C7Q5V8;
+				INFOPLIST_FILE = "$(SRCROOT)/iGongdong/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 3.19.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.panicstyle.iGongdong;
+				PRODUCT_NAME = iGongdong;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		EC86FCFA24A754A500E2D337 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB8DAB0A82B64384C9B9DFAD /* Pods-iGongdongTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8PG9C7Q5V8;
+				INFOPLIST_FILE = iMooojigaeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.panicstyle.iMooojigaeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iGongdong.app/iGongdong";
+			};
+			name = Debug;
+		};
+		EC86FCFB24A754A500E2D337 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 615BAEC4C74E824820D6B02E /* Pods-iGongdongTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8PG9C7Q5V8;
+				INFOPLIST_FILE = iMooojigaeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.panicstyle.iMooojigaeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iGongdong.app/iGongdong";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EC86FCD224A754A400E2D337 /* Build configuration list for PBXProject "iGongdong" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC86FCF424A754A500E2D337 /* Debug */,
+				EC86FCF524A754A500E2D337 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EC86FCF624A754A500E2D337 /* Build configuration list for PBXNativeTarget "iGongdong" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC86FCF724A754A500E2D337 /* Debug */,
+				EC86FCF824A754A500E2D337 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EC86FCF924A754A500E2D337 /* Build configuration list for PBXNativeTarget "iGongdongTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC86FCFA24A754A500E2D337 /* Debug */,
+				EC86FCFB24A754A500E2D337 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EC86FCCF24A754A400E2D337 /* Project object */;
+}
