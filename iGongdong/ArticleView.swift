@@ -21,6 +21,7 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
     @IBOutlet var tableView : UITableView!
     @IBOutlet var bannerView: GADBannerView!
     @IBOutlet var btnMenu: UIBarButtonItem!
+    var commId: String = ""
     var boardId: String = ""
     var boardNo: String = ""
     var delegate: ArticleViewDelegate?
@@ -76,7 +77,7 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
         self.loadData()
         
         let db = DBInterface()
-        db.insert(boardId: boardId, boardNo: boardNo)
+        db.insert(commId: commId, boardId: boardId, boardNo: boardNo)
     }
 
     @objc func contentSizeCategoryDidChangeNotification() {

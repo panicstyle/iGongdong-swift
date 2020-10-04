@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension String {
 
@@ -22,6 +23,27 @@ extension String {
       let start = index(startIndex, offsetBy: aRange.location)
       let end = index(start, offsetBy: aRange.length)
       return String(self[start..<end])
+    }
+}
+
+extension UIImageView {
+    func downloaded(from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
+        contentMode = mode
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil,
+                let image = UIImage(data: data)
+                else { return }
+            DispatchQueue.main.async() { [weak self] in
+                self?.image = image
+            }
+        }.resume()
+    }
+    func downloaded(from link: String, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
+        guard let url = URL(string: link) else { return }
+        downloaded(from: url, contentMode: mode)
     }
 }
 
@@ -199,193 +221,7 @@ struct BoardData {
     }
 }
 
-//MARK: - ItemsData
-
-struct  Item {
-    var isPNotice: Int = 0
-    var isNotice: Int = 0
-    var commId: String = ""
-    var boardId: String = ""
-    var boardNo: String = ""
-    var isNew: Int = 0
-    var isRe: Int = 0
-    var subject: String = ""
-    var id: String = ""
-    var name: String = ""
-    var comment: String = ""
-    var hit: String = ""
-    var date: String = ""
-    var read: Int = 0
-}
-
-struct ItemData {
-    var itemList = [Item]()
-    var error: String = ""
-
-    init?() {
-        return nil
-    }
-    
-    init?(result: String) {
-        var selectStr = Utils.findStringRegex(result, regex: "(<table cellSpacing=).*?(/table>)")
-        selectStr = Utils.replaceStringRegex(selectStr, regex: "\r\n", replace: "\n")
-        let matchs = Utils.matchStringRegex(selectStr, regex: "(id=\\\"board_list_line\\\").*?(</tr>)")
-        let db = DBInterface()
-        for match in matchs {
-            let matchstr = selectStr[match.range]
-            print("-----\n\(matchstr)\n-----")
-            
-            var isPNotice = 0
-            if Utils.numberOfMatches(matchstr, regex: "\\[법인공지\\]") > 0 {
-                isPNotice = 1
-            }
-            
-            var isNotice = 0
-            if Utils.numberOfMatches(matchstr, regex: "\\[공지\\]") > 0 {
-                isNotice = 1
-            }
-            
-            var subject = ""
-            subject = Utils.findStringRegex(matchstr, regex: "(<td class=\"subject).*?(</a>)")
-            subject = Utils.replaceOnlyHtmlTag(subject)
-            
-            let link = Utils.findStringRegex(matchstr, regex: "(?<=<a href=\\\").*?(?=\\\")")
-            var commId = ""
-            var boardId = ""
-            var boardNo = ""
-            if isPNotice > 0 {
-                boardId = Utils.findStringRegex(link, regex: "(?<=bo_table=).*?(?=&)")
-                boardNo = Utils.findStringRegex(link, regex: "(?<=&wr_id=).*?(?=$)")
-            } else {
-                commId = Utils.findStringRegex(link, regex: "(?<=p1=).*?(?=&)")
-                boardId = Utils.findStringRegex(link, regex: "(?<=sort=).*?(?=&)")
-                boardNo = Utils.findStringRegex(link, regex: "(?<=&number=).*?(?=&)")
-            }
-            
-            var comment = Utils.findStringRegex(matchstr, regex: "(<td class=\"subject).*?(</td>)")
-            comment = Utils.findStringRegex(comment, regex: "(</a>).*?(</td>)")
-            comment = Utils.findStringRegex(comment, regex: "(?<=\\[).*?(?=\\])")
-            
-            var isNew = 0
-            if Utils.numberOfMatches(matchstr, regex: "img src=images/new_s\\.gif") > 0 {
-                isNew = 1
-            }
-            
-            var id = ""
-            var name = ""
-            if isPNotice > 0 {
-                id = "법인공지"
-                name = "법인공지"
-            } else if isNotice > 0 {
-                id = "공지"
-                name = "공지"
-            } else {
-                id = Utils.findStringRegex(matchstr, regex: "(?<=javascript:ui\\(').*?(?=')")
-                name = Utils.findStringRegex(matchstr, regex: "(<!-- 사용자 이름 표시 부분-->).*?(</div>)")
-                name = Utils.replaceOnlyHtmlTag(name)
-            }
-            
-            var date = Utils.findStringRegex(matchstr, regex: "(<td class=\"date).*?(</td>)")
-            date = Utils.replaceOnlyHtmlTag(date)
-            
-            let hit = Utils.findStringRegex(matchstr, regex: "(<td class=\"hit).*?(</td>)")
-            
-            var isRe = 0
-            if Utils.numberOfMatches(matchstr, regex: "images/reply\\.gif") > 0 {
-                isRe = 1
-            }
-            
-            var read = 0
-            if db.search(boardId: boardId, boardNo: boardNo) > 0 {
-                read = 1
-            }
-            
-            var item = Item()
-            item.isPNotice = isPNotice
-            item.isNotice = isNotice
-            item.commId = commId
-            item.boardId = boardId
-            item.boardNo = boardNo
-            item.isNew = isNew
-            item.isRe = isRe
-            item.subject = subject
-            item.id = id
-            item.name = name
-            item.comment = comment
-            item.hit = hit
-            item.date = date
-            item.read = read
-            self.itemList.append(item)
-        }
-    }
-}
-
-//MARK: - RecentItemsData
-
-struct  RecentItem {
-    var boardNo: String = ""
-    var isNew: Int = 0
-    var isUpdated: Int = 0
-    var boardId: String = ""
-    var boardName: String = ""
-    var subject: String = ""
-    var name: String = ""
-    var comment: String = ""
-    var hit: String = ""
-    var date: String = ""
-    var read: Int = 0
-}
-
-struct RecentItemData {
-    var itemList = [RecentItem]()
-
-    init?() {
-        return nil
-    }
-    
-    init?(json: [String: Any]) {
-        // The name must not be empty
-        guard !json.isEmpty else {
-            return nil
-        }
-
-        // Initialization should fail if there is no name or if the rating is negative.
-        if json.isEmpty  {
-            return nil
-        }
-        guard
-            let items = json["item"] as? [[String: Any]]
-        else {
-            return nil
-        }
-        let db = DBInterface()
-        for itemIndex in items {
-            var item = RecentItem()
-            item.boardNo = itemIndex["boardNo"] as! String
-            let recentArticle = itemIndex["recentArticle"] as! String
-            if recentArticle == "Y" {
-                item.isNew = 1
-            }
-            let updatedArticle = itemIndex["updatedArticle"] as! String
-            if updatedArticle == "Y" {
-                item.isUpdated = 1
-            }
-            item.boardId = itemIndex["boardId"] as! String
-            item.boardName = itemIndex["boardName"] as! String
-            item.subject = itemIndex["boardTitle"] as! String
-            item.name = itemIndex["userNick"] as! String
-            item.comment = itemIndex["boardMemo_cnt"] as! String
-            item.hit = itemIndex["boardRead_cnt"] as! String
-            item.date = itemIndex["boardRegister_dt"] as! String
-            
-            item.read = 0
-            if db.search(boardId: item.boardId, boardNo: item.boardNo) > 0 {
-                item.read = 1
-            }
-            self.itemList.append(item)
-        }
-    }
-}
+//MARK: - CommentItem
 
 struct  CommentItem {
     var isRe: String = ""
@@ -395,16 +231,22 @@ struct  CommentItem {
     var comment: String = ""
 }
 
+//MARK: - ImageItem
+
 struct  ImageItem {
     var fileName: String = ""
     var link: String = ""
 }
+
+//MARK: - AttachItem
 
 struct  AttachItem {
     var fileName: String = ""
     var fileSeq: String = ""
     var link: String = ""
 }
+
+//MARK: - ArticleData
 
 struct ArticleData {
     var subject: String = ""

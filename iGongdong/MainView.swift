@@ -135,12 +135,17 @@ class MainView : UIViewController, UITableViewDelegate, UITableViewDataSource, H
             guard let indexPath = tableView.indexPathForSelectedRow else {
                 fatalError("The selected cell is not being displayed by the table")
             }
-            let menuData = mainData?.menuList[indexPath.row]
-            boardView.commTitle = menuData!.title
-            boardView.commId = menuData!.code
-            if indexPath.section == 0 {
+            let sec = indexPath.section
+            let row = indexPath.row
+            if sec == 0 {
+                let menuData = mainData?.mainList[row]
+                boardView.commTitle = menuData!.title
+                boardView.commId = menuData!.code
                 boardView.menuType = GlobalConst.CENTER
             } else {
+                let menuData = mainData?.menuList[row]
+                boardView.commTitle = menuData!.title
+                boardView.commId = menuData!.code
                 boardView.menuType = GlobalConst.COMMUNITY
             }
         case "About":
@@ -187,7 +192,8 @@ class MainView : UIViewController, UITableViewDelegate, UITableViewDataSource, H
     }
     
     func loginToService(_ loginToService: LoginToService, loginWithFail result: String) {
-        
+        print("LoginToService fail")
+        loadData()
     }
     
     func loginToService(_ loginToService: LoginToService, logoutWithSuccess result: String) {

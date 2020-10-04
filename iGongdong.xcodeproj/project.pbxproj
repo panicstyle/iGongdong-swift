@@ -22,10 +22,10 @@
 		EC86FCF224A754A500E2D337 /* iGongdongTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86FCF124A754A500E2D337 /* iGongdongTests.swift */; };
 		EC86FCFD24A78EE800E2D337 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86FCFC24A78EE800E2D337 /* MainView.swift */; };
 		ECA7C1A8250D12C50036D825 /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA7C1A7250D12C50036D825 /* ItemView.swift */; };
-		ECC42FF0250F09BB006E9F67 /* RecentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC42FEF250F09BB006E9F67 /* RecentView.swift */; };
 		ECC42FF2250F1CA6006E9F67 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC42FF1250F1CA6006E9F67 /* LinkView.swift */; };
 		ECC42FF4250F32D6006E9F67 /* ArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC42FF3250F32D6006E9F67 /* ArticleView.swift */; };
 		ECCB6F64251B5EC900DCEF71 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCB6F63251B5EC900DCEF71 /* AboutView.swift */; };
+		ECD733C325296B0B00F91CB2 /* ItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD733C225296B0B00F91CB2 /* ItemData.swift */; };
 		ECD7FF4124F6B78D0008F0F3 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD7FF4024F6B78D0008F0F3 /* BoardView.swift */; };
 		ECD9B71224ECB40B00B1B978 /* HttpSessionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9B71124ECB40B00B1B978 /* HttpSessionRequest.swift */; };
 		ECD9B71624ECC1A700B1B978 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9B71524ECC1A700B1B978 /* AppData.swift */; };
@@ -70,10 +70,10 @@
 		EC86FCF324A754A500E2D337 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC86FCFC24A78EE800E2D337 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		ECA7C1A7250D12C50036D825 /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
-		ECC42FEF250F09BB006E9F67 /* RecentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentView.swift; sourceTree = "<group>"; };
 		ECC42FF1250F1CA6006E9F67 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
 		ECC42FF3250F32D6006E9F67 /* ArticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleView.swift; sourceTree = "<group>"; };
 		ECCB6F63251B5EC900DCEF71 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		ECD733C225296B0B00F91CB2 /* ItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemData.swift; sourceTree = "<group>"; };
 		ECD7FF4024F6B78D0008F0F3 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		ECD9B71124ECB40B00B1B978 /* HttpSessionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpSessionRequest.swift; sourceTree = "<group>"; };
 		ECD9B71524ECC1A700B1B978 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
@@ -159,6 +159,7 @@
 				ECD9B71124ECB40B00B1B978 /* HttpSessionRequest.swift */,
 				EC7FF15E251A09420020E1CE /* iGongdong.entitlements */,
 				EC86FCE824A754A400E2D337 /* Info.plist */,
+				ECD733C225296B0B00F91CB2 /* ItemData.swift */,
 				ECA7C1A7250D12C50036D825 /* ItemView.swift */,
 				ECF7BB872512EFE50081AE5B /* KeyboardObserver.swift */,
 				EC86FCE524A754A400E2D337 /* LaunchScreen.storyboard */,
@@ -166,7 +167,6 @@
 				EC2911C8250B431600E61269 /* LoginToService.swift */,
 				EC86FCE024A754A400E2D337 /* Main.storyboard */,
 				EC86FCFC24A78EE800E2D337 /* MainView.swift */,
-				ECC42FEF250F09BB006E9F67 /* RecentView.swift */,
 				EC7FF16B251A0CB20020E1CE /* SceneDelegate.swift */,
 				EC2911C6250B355300E61269 /* SetView.swift */,
 				EC62F8462518D8BD00452C93 /* String+Extionsion.swift */,
@@ -353,6 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECD733C325296B0B00F91CB2 /* ItemData.swift in Sources */,
 				ECD7FF4124F6B78D0008F0F3 /* BoardView.swift in Sources */,
 				ECD9B71224ECB40B00B1B978 /* HttpSessionRequest.swift in Sources */,
 				ECDA63BA2519AEAB0053B8A1 /* DBInterface.swift in Sources */,
@@ -362,7 +363,6 @@
 				ECD9B71624ECC1A700B1B978 /* AppData.swift in Sources */,
 				EC86FCFD24A78EE800E2D337 /* MainView.swift in Sources */,
 				ECD9B71824ED007300B1B978 /* GlobalConst.swift in Sources */,
-				ECC42FF0250F09BB006E9F67 /* RecentView.swift in Sources */,
 				EC62F8472518D8BD00452C93 /* String+Extionsion.swift in Sources */,
 				EC33A47E2515C66700DCC8FB /* Utils.swift in Sources */,
 				ECF7BB862511E19E0081AE5B /* ArticleWrite.swift in Sources */,

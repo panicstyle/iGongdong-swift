@@ -20,6 +20,7 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
     var commId: String = ""
     var boardId: String = ""
     
+    var mode = 0
     var itemList = [Item]()
     var nPage: Int = 1
     var isEndPage = false
@@ -72,7 +73,7 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellItem = "Item"
         let cellReItem = "ReItem"
-//        let cellIdentifierMore = "More"
+        let cellPicItem = "PicItem"
 
         var cell: UITableViewCell
         let item = itemList[indexPath.row]
@@ -81,18 +82,22 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
         let bodyFont = UIFont.preferredFont(forTextStyle: .body)
         let footnoteFont = UIFont.preferredFont(forTextStyle: .footnote)
 
-        if isRe == 0 {
-            cell = tableView.dequeueReusableCell(withIdentifier: cellItem, for: indexPath)
+        if mode == 1 || boardType == GlobalConst.CAFE_TYPE_ING {
+            cell = tableView.dequeueReusableCell(withIdentifier: cellPicItem, for: indexPath)
+
             // Fetches the appropriate meal for the data source layout.
-            let imageView: UIImageView = cell.viewWithTag(110) as! UIImageView
-            let textSubject: UITextView = cell.viewWithTag(101) as! UITextView
-            let labelName: UILabel = cell.viewWithTag(100) as! UILabel
-            let labelComment: UILabel = cell.viewWithTag(103) as! UILabel
+            let imageNew: UIImageView = cell.viewWithTag(210) as! UIImageView
+            let textSubject: UITextView = cell.viewWithTag(201) as! UITextView
+            let labelName: UILabel = cell.viewWithTag(202) as! UILabel
+            let labelComment: UILabel = cell.viewWithTag(203) as! UILabel
+            let imageView: UIImageView = cell.viewWithTag(200) as! UIImageView
+
+            imageView.downloaded(from: item.picLink)
             
             if (item.isNew == 1) {
-                imageView.image = UIImage.init(named: "circle")
+                imageNew.image = UIImage.init(named: "circle")
             } else {
-                imageView.image = UIImage.init(named: "circle-black")
+                imageNew.image = UIImage.init(named: "circle-black")
             }
             
             if item.comment == "" || item.comment == "0" {
@@ -129,54 +134,104 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
             labelName.font = footnoteFont
             labelComment.font = footnoteFont
         } else {
-            cell = tableView.dequeueReusableCell(withIdentifier: cellReItem, for: indexPath)
-            // Fetches the appropriate meal for the data source layout.
-            let imageView: UIImageView = cell.viewWithTag(310) as! UIImageView
-            let textSubject: UITextView = cell.viewWithTag(301) as! UITextView
-            let labelName: UILabel = cell.viewWithTag(300) as! UILabel
-            let labelComment: UILabel = cell.viewWithTag(303) as! UILabel
-
-            if (item.isNew == 1) {
-                imageView.image = UIImage.init(named: "circle")
-            } else {
-                imageView.image = UIImage.init(named: "circle-black")
-            }
-
-            if item.comment == "" || item.comment == "0" {
-                labelComment.isHidden = true
-            } else {
-                labelComment.isHidden = false
-                labelComment.layer.cornerRadius = 8
-                labelComment.layer.borderWidth = 2.0;
-                let cnt = Int(item.comment) ?? 1
-                if cnt < 10 {
-                    labelComment.textColor = Utils.hexStringToUIColor(hex: "0B84FF")
+            if isRe == 0 {
+                cell = tableView.dequeueReusableCell(withIdentifier: cellItem, for: indexPath)
+                // Fetches the appropriate meal for the data source layout.
+                let imageView: UIImageView = cell.viewWithTag(110) as! UIImageView
+                let textSubject: UITextView = cell.viewWithTag(101) as! UITextView
+                let labelName: UILabel = cell.viewWithTag(100) as! UILabel
+                let labelComment: UILabel = cell.viewWithTag(103) as! UILabel
+                
+                if (item.isNew == 1) {
+                    imageView.image = UIImage.init(named: "circle")
                 } else {
-                    labelComment.textColor = Utils.hexStringToUIColor(hex: "30D158")
+                    imageView.image = UIImage.init(named: "circle-black")
                 }
-                labelComment.layer.borderColor = labelComment.textColor.cgColor;
-            }
-            
-            let subject = String(htmlEncodedString: item.subject)
-            textSubject.text = subject
-            labelName.text = item.name + " " + item.date
-            labelComment.text = item.comment
-
-            if item.read == 1 {
-                textSubject.textColor = .gray
-            } else {
-                if #available(iOS 13.0, *) {
-                    textSubject.textColor = .label
+                
+                if item.comment == "" || item.comment == "0" {
+                    labelComment.isHidden = true
                 } else {
-                    textSubject.textColor = .black
+                    labelComment.isHidden = false
+                    labelComment.layer.cornerRadius = 8
+                    labelComment.layer.borderWidth = 2.0;
+                    let cnt = Int(item.comment) ?? 1
+                    if cnt < 10 {
+                        labelComment.textColor = Utils.hexStringToUIColor(hex: "0B84FF")
+                    } else {
+                        labelComment.textColor = Utils.hexStringToUIColor(hex: "30D158")
+                    }
+                    labelComment.layer.borderColor = labelComment.textColor.cgColor;
                 }
+                
+                let subject = String(htmlEncodedString: item.subject)
+                textSubject.text = subject
+                labelName.text = item.name + " " + item.date
+                labelComment.text = item.comment
+                
+                if item.read == 1 {
+                    textSubject.textColor = .gray
+                } else {
+                    if #available(iOS 13.0, *) {
+                        textSubject.textColor = .label
+                    } else {
+                        textSubject.textColor = .black
+                    }
+                }
+
+                textSubject.font = bodyFont
+                labelName.font = footnoteFont
+                labelComment.font = footnoteFont
+            } else {
+                cell = tableView.dequeueReusableCell(withIdentifier: cellReItem, for: indexPath)
+                // Fetches the appropriate meal for the data source layout.
+                let imageView: UIImageView = cell.viewWithTag(310) as! UIImageView
+                let textSubject: UITextView = cell.viewWithTag(301) as! UITextView
+                let labelName: UILabel = cell.viewWithTag(300) as! UILabel
+                let labelComment: UILabel = cell.viewWithTag(303) as! UILabel
+
+                if (item.isNew == 1) {
+                    imageView.image = UIImage.init(named: "circle")
+                } else {
+                    imageView.image = UIImage.init(named: "circle-black")
+                }
+
+                if item.comment == "" || item.comment == "0" {
+                    labelComment.isHidden = true
+                } else {
+                    labelComment.isHidden = false
+                    labelComment.layer.cornerRadius = 8
+                    labelComment.layer.borderWidth = 2.0;
+                    let cnt = Int(item.comment) ?? 1
+                    if cnt < 10 {
+                        labelComment.textColor = Utils.hexStringToUIColor(hex: "0B84FF")
+                    } else {
+                        labelComment.textColor = Utils.hexStringToUIColor(hex: "30D158")
+                    }
+                    labelComment.layer.borderColor = labelComment.textColor.cgColor;
+                }
+                
+                let subject = String(htmlEncodedString: item.subject)
+                textSubject.text = subject
+                labelName.text = item.name + " " + item.date
+                labelComment.text = item.comment
+
+                if item.read == 1 {
+                    textSubject.textColor = .gray
+                } else {
+                    if #available(iOS 13.0, *) {
+                        textSubject.textColor = .label
+                    } else {
+                        textSubject.textColor = .black
+                    }
+                }
+                
+                textSubject.font = bodyFont
+                labelName.font = footnoteFont
+                labelComment.font = footnoteFont
             }
-            
-            textSubject.font = bodyFont
-            labelName.font = footnoteFont
-            labelComment.font = footnoteFont
         }
-//        print ("indexPath.row=\(indexPath.row), itemList.count=\(itemList.count)")
+
+        // 마지막 row 가 표시되면 다음 페이지를 load 한다.
         if indexPath.row  == (itemList.count - 1) {
             if !isEndPage {
                 nPage = nPage + 1
@@ -237,9 +292,8 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
     
     func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, didFinishLodingData data: Data) {
         let str = String(data: data, encoding: .utf8) ?? ""
-        let itemData = ItemData(result: str)
-        
-        if itemData!.error != "" {
+        if Utils.numberOfMatches(str, regex: "window.alert\\(\\\"권한이 없습니다") > 0 || Utils.numberOfMatches(str, regex: "window.alert\\(\\\"로그인 하세요") > 0 {
+            print("권한오류")
             if isLoginRetry == 0 {
                 isLoginRetry = 1
                 // 재로그인 한다.
@@ -247,9 +301,14 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
                 loginToService.delegate = self
                 loginToService.Login()
             } else {
-                let str = String(data: data, encoding: .utf8) ?? ""
-                let msg = Utils.findStringRegex(str, regex: "(?<=<b>시스템 메세지입니다</b></font><br>).*?(?=<br>)")
-                let alert = UIAlertController(title: "시스템 메시지입니다", message: msg, preferredStyle: .alert)
+                var msg = "권한이 없거나 로그인 정보를 확인하세요."
+                if Utils.numberOfMatches(str, regex: "window.alert\\(\\\"권한이 없습니다") > 0 {
+                   msg = "권한이 없습니다."
+                }
+                if Utils.numberOfMatches(str, regex: "window.alert\\(\\\"로그인 하세요") > 0 {
+                    msg = "로그인 하세요."
+                }
+                let alert = UIAlertController(title: "오류", message: msg, preferredStyle: .alert)
                 let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
                 alert.addAction(confirm)
                 DispatchQueue.main.sync {
@@ -258,6 +317,8 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
             }
             return
         } else {
+            let itemData = ItemData(result: str, type: boardType)
+            self.mode = itemData!.mode
             if itemData!.itemList.count > 0 {
                 if nPage == 1 {
                     itemList = itemData!.itemList
@@ -274,6 +335,13 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
     }
 
     func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, withError error: Error?) {
+        let msg = "권한이 없거나 로그인 정보를 확인하세요."
+        let alert = UIAlertController(title: "오류", message: msg, preferredStyle: .alert)
+        let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
+        alert.addAction(confirm)
+        DispatchQueue.main.sync {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 
     //MARK: - Private Methods
@@ -325,7 +393,8 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
         if boardType == GlobalConst.CAFE_TYPE_NORMAL {
             resource = "\(GlobalConst.CafeName)/cafe.php?sort=\(boardId)&sub_sort=&keyfield=&key_bs=&p1=\(commId)&p2=&p3=&page=\(nPage)"
         } else if boardType == GlobalConst.CAFE_TYPE_APPLY {
-            resource = "\(GlobalConst.ServerName)/bbs/board.php?bo_table=B691&sca=\(boardId)&page=\(nPage)"
+            let escBoardId = String(boardId.addingPercentEncoding( withAllowedCharacters: .urlQueryAllowed) ?? "")
+            resource = "\(GlobalConst.ServerName)/bbs/board.php?bo_table=B691&sca=\(escBoardId)&page=\(nPage)"
         } else {
             resource = "\(GlobalConst.ServerName)/bbs/board.php?bo_table=\(boardId)&page=\(nPage)"
         }

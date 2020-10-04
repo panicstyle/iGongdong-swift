@@ -14,7 +14,7 @@ class DBInterface {
     func dbPath() -> String {
         let fileman = FileManager.default
         let paths = fileman.urls(for: .documentDirectory, in: .userDomainMask)
-        let fullPath = paths[0].appendingPathComponent("moojigae.sqlite")
+        let fullPath = paths[0].appendingPathComponent("gongdong.sqlite")
         
         if !fileman.fileExists(atPath: fullPath.path) {
             createTable(filePath: fullPath.path)
@@ -31,7 +31,7 @@ class DBInterface {
         // 1
         var createTableStatement: OpaquePointer? = nil
         // 2
-        let createTableString = "CREATE TABLE IF NOT EXISTS article ( boardId TEXT, boardNo TEXT, cr_date DATE DEFAULT (datetime('now','localtime')), PRIMARY KEY (boardId, boardNo))"
+        let createTableString = "CREATE TABLE IF NOT EXISTS article ( commId TEXT, boardId TEXT, boardNo TEXT, cr_date DATE DEFAULT (datetime('now','localtime')), PRIMARY KEY (commId, boardId, boardNo))"
         if sqlite3_prepare_v2(db, createTableString, -1, &createTableStatement, nil) == SQLITE_OK {
             // 3
             if sqlite3_step(createTableStatement) == SQLITE_DONE {
@@ -46,13 +46,13 @@ class DBInterface {
         sqlite3_finalize(createTableStatement)
     }
     
-    func search(boardId: String, boardNo: String) -> Int {
+    func search(commId: String, boardId: String, boardNo: String) -> Int {
         var queryStatement: OpaquePointer? = nil
         var db: OpaquePointer? = nil
         var result = 0
         let dbPath = self.dbPath()
         if sqlite3_open(dbPath, &db) == SQLITE_OK {
-            if sqlite3_prepare_v2(db, "SELECT count(*) FROM article WHERE boardId = \"\(boardId)\" AND boardNo = \"\(boardNo)\";", -1, &queryStatement, nil) == SQLITE_OK {
+            if sqlite3_prepare_v2(db, "SELECT count(*) FROM article WHERE commId = \"\(commId)\" AND boardId = \"\(boardId)\" AND boardNo = \"\(boardNo)\";", -1, &queryStatement, nil) == SQLITE_OK {
                 // 2
                 if sqlite3_step(queryStatement) == SQLITE_ROW {
                     // 3
@@ -68,17 +68,19 @@ class DBInterface {
         return result
     }
     
-    func insert(boardId: String, boardNo: String) {
+    func insert(commId: String, boardId: String, boardNo: String) {
         var insertStatement: OpaquePointer? = nil
         var db: OpaquePointer? = nil
         let dbPath = self.dbPath()
         if sqlite3_open(dbPath, &db) == SQLITE_OK {
-            if sqlite3_prepare_v2(db, "INSERT INTO article (boardId, boardNo) VALUES (?, ?)", -1, &insertStatement, nil) == SQLITE_OK {
+            if sqlite3_prepare_v2(db, "INSERT INTO article (commId, boardId, boardNo) VALUES (?, ?, ?)", -1, &insertStatement, nil) == SQLITE_OK {
+                let nsCommId: NSString = commId as NSString
                 let nsBoardId: NSString = boardId as NSString
                 let nsBoardNo: NSString = boardNo as NSString
 
-                sqlite3_bind_text(insertStatement, 1, nsBoardId.utf8String, -1, nil)
-                sqlite3_bind_text(insertStatement, 2, nsBoardNo.utf8String, -1, nil)
+                sqlite3_bind_text(insertStatement, 1, nsCommId.utf8String, -1, nil)
+                sqlite3_bind_text(insertStatement, 2, nsBoardId.utf8String, -1, nil)
+                sqlite3_bind_text(insertStatement, 3, nsBoardNo.utf8String, -1, nil)
                 if sqlite3_step(insertStatement) == SQLITE_DONE {
                     print("Successfully inserted row.")
                 } else {
