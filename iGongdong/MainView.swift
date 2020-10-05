@@ -11,7 +11,7 @@ import os.log
 import WebKit
 import GoogleMobileAds
 
-class MainView : UIViewController, UITableViewDelegate, UITableViewDataSource, HttpSessionRequestDelegate, LoginToServiceDelegate {
+class MainView : UIViewController, UITableViewDelegate, UITableViewDataSource, HttpSessionRequestDelegate, LoginToServiceDelegate, SetViewDelegate {
     
     //MARK: Properties
     
@@ -126,7 +126,10 @@ class MainView : UIViewController, UITableViewDelegate, UITableViewDataSource, H
         switch(segue.identifier ?? "") {
             
         case "SetView":
-            break
+            guard let setView = segue.destination as? SetView else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            setView.delegate = self
         case "Menu":
             guard let boardView = segue.destination as? BoardView else {
                 fatalError("Unexpected destination: \(segue.destination)")
@@ -211,7 +214,13 @@ class MainView : UIViewController, UITableViewDelegate, UITableViewDataSource, H
     func loginToService(_ loginToService: LoginToService, pushWithFail result: String) {
         
     }
-    
+
+    //MARK: - SetViewDelegate
+
+    func setView(_ setView: SetView, didSaved sender: Any) {
+        print("setView success")
+        loadData()
+    }
     
     //MARK: - User Functions
     

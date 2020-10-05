@@ -26,6 +26,8 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
     var boardNo: String = ""
     var delegate: ArticleViewDelegate?
     var selectedRow = -1
+    var boardType: Int = 0
+    var isPNotice: Int = 0
     
     var articleData = ArticleData()
     var cellContent: UITableViewCell?
@@ -170,13 +172,16 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
         default:
             let commentList = self.articleData!.commentList
             let item = commentList[indexPath.row]
-            if item.isRe == "1" {
+            if item.isRe == 0 {
                 cell = tableView.dequeueReusableCell(withIdentifier: cellReplay, for: indexPath)
                 let labelName = cell.viewWithTag(200) as! UILabel
                 let viewComment = cell.viewWithTag(202) as! UITextView
                 labelName.text = item.name + " " + item.date
 
-                let comment = String(htmlEncodedString: item.comment)
+                var comment = String(htmlEncodedString: item.comment)
+                if comment!.hasSuffix("\n") {
+                    comment = comment!.removeSuffix()
+                }
                 viewComment.text = comment
                 
                 labelName.font = footnoteFont
@@ -271,20 +276,15 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
         let url: URL? = navigationAction.request.url
         var urlString: String? = url?.absoluteString ?? ""
         urlString = urlString?.removingPercentEncoding ?? ""
-        let rangeKey = urlString!.range(of: #"(?<=&c=).*?(?=&)"#, options: .regularExpression)
-
-        var keySub: Substring = ""
-        var key: String = ""
-        var fileName: String = ""
-        var loweredExt: String = ""
-
-        if rangeKey != nil {
-            keySub = urlString![rangeKey!]
-            key = String(keySub)
-            fileName = self.dicAttach[key] ?? ""
-            loweredExt = fileName.fileExtension().lowercased()
+        var fileName = ""
+        if boardType == GlobalConst.CAFE_TYPE_NORMAL {
+            fileName = Utils.findStringRegex(urlString!, regex: "(?<=&name=).*?(?=$)")
+            fileName = String(htmlEncodedString: fileName) ?? ""
+        } else {
+            fileName = self.dicAttach[urlString!] ?? ""
         }
-        
+
+        let loweredExt = fileName.fileExtension().lowercased()
         let validImageExt: Set<String> = ["tif", "tiff", "jpg", "jpeg", "gif", "png", "bmp", "bmpf", "ico", "cur", "xbm"]
         
         if (navigationAction.navigationType == WKNavigationType.linkActivated) {
@@ -434,14 +434,30 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
     //MARK: - Private Methods
     
     private func loadData() {
+        
+        var resource = ""
+        if boardType == GlobalConst.CAFE_TYPE_NORMAL {
+            if isPNotice == 0 {
+                resource = "\(GlobalConst.CafeName)/cafe.php?sort=\(boardId)&sub_sort=&page=1&startpage=1&keyfield=&key_bs=&p1=\(commId)&p2=&p3=&number=\(boardNo)&mode=view"
+            } else {
+                resource = "\(GlobalConst.ServerName)/bbs/board.php?bo_table=\(boardId)&wr_id=\(boardNo)"
+
+            }
+        } else if boardType == GlobalConst.CAFE_TYPE_APPLY {
+            let escBoardId = String(boardId.addingPercentEncoding( withAllowedCharacters: .urlQueryAllowed) ?? "")
+            resource = "\(GlobalConst.ServerName)/bbs/board.php?bo_table=B691&sca=\(escBoardId)&wr_id=\(boardNo)"
+        } else {
+            resource = "\(GlobalConst.ServerName)/bbs/board.php?bo_table=\(boardId)&wr_id=\(boardNo)"
+        }
+        
         let httpSessionRequest = HttpSessionRequest()
         httpSessionRequest.delegate = self
         httpSessionRequest.tag = GlobalConst.READ_ARTICLE
-        httpSessionRequest.requestWithParam(httpMethod: "GET", resource: GlobalConst.ServerName + "/board-api-read.do?boardId=" + boardId + "&boardNo=" + self.boardNo + "&command=READ&page=1&categoryId=-1&rid=20", param: nil, referer: "")
+        httpSessionRequest.requestWithParam(httpMethod: "GET", resource: resource, param: nil, referer: "")
     }
     
     func makeWebContent(_ httpSessionRequest:HttpSessionRequest) {
-        var strImage: String = ""
+/*        var strImage: String = ""
         let imageList = self.articleData?.imageList
         for item in imageList! {
             let fileName = item.fileName.lowercased()
@@ -467,9 +483,14 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
         
         var strProfile: String = ""
         strProfile = strProfile + "<div class='profile'>" + self.articleData!.profile + "</div>"
+*/
+        let attachList = self.articleData?.attachList
+        for item in attachList! {
+            self.dicAttach.updateValue(item.value, forKey: item.key)
+        }
         
-        var strContent: String = self.articleData!.content
-        strContent = strContent.replacingOccurrences(of: "<img ", with: "<img onclick=\"myapp_clickImg(this)\" width=300 ")
+        let strContent: String = self.articleData!.content
+//        strContent = strContent.replacingOccurrences(of: "<img ", with: "<img onclick=\"myapp_clickImg(this)\" width=300 ")
 
         let strDarkModeCss: String = """
         <style type="text/css">
@@ -498,7 +519,7 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
         strHtml += "<html><head>"
         strHtml += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
         strHtml += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi\">"
-        strHtml += "<script>function myapp_clickImg(obj){window.location=\"jscall://\"+encodeURIComponent(obj.src);}</script>"
+        strHtml += "<script>function image_open(src, obj){window.location=\"jscall://\"+encodeURIComponent(obj.src);} function myapp_clickImg(obj){window.location=\"jscall://\"+encodeURIComponent(obj.src);}</script>"
 
         if self.isDarkMode {
             strHtml += strDarkModeCss
@@ -509,10 +530,8 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
         strHtml += "</head>"
         strHtml += "<body>"
         strHtml += strContent2
-        strHtml += strImage
-        strHtml += strAttach
-        strHtml += "<hr>"
-        strHtml += strProfile
+        strHtml += self.articleData!.imageStr
+        strHtml += self.articleData!.attachStr
         strHtml += "</body></html>"
         
         editableSubject = String(htmlEncodedString: self.articleData!.subject) ?? ""
@@ -527,7 +546,6 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
             }
         }
         
-        let baseUrl = URL(string: GlobalConst.ServerName)
         config = WKWebViewConfiguration()
         config!.websiteDataStore = wkDataStore
         
@@ -543,8 +561,12 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
 
         self.webView?.backgroundColor = .white
         self.webView?.isOpaque = false
-        self.webView?.loadHTMLString(strHtml, baseURL: baseUrl)
-        
+        if boardType == GlobalConst.CAFE_TYPE_NORMAL {
+            self.webView?.loadHTMLString(strHtml, baseURL: URL(string: GlobalConst.CafeName))
+        } else {
+            self.webView?.loadHTMLString(strHtml, baseURL: URL(string: GlobalConst.ServerName))
+        }
+
         self.tableView.reloadData()
     }
     
@@ -604,8 +626,9 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
     }
     
     func readArticleFinish(_ httpSessionRequest: HttpSessionRequest, _ data: Data) {
-        guard let jsonToArray = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] else {
-            print("json to Any Error")
+        let str = String(data: data, encoding: .utf8) ?? ""
+        if Utils.numberOfMatches(str, regex: "window.alert\\(\\\"권한이 없습니다") > 0 || Utils.numberOfMatches(str, regex: "window.alert\\(\\\"로그인 하세요") > 0 {
+            print("권한오류")
             if isLoginRetry == 0 {
                 isLoginRetry = 1
                 // 재로그인 한다.
@@ -613,9 +636,14 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 loginToService.delegate = self
                 loginToService.Login()
             } else {
-                let str = String(data: data, encoding: .utf8) ?? ""
-                let msg = Utils.findStringRegex(str, regex: "(?<=<b>시스템 메세지입니다</b></font><br>).*?(?=<br>)")
-                let alert = UIAlertController(title: "시스템 메시지입니다", message: msg, preferredStyle: .alert)
+                var msg = "권한이 없거나 로그인 정보를 확인하세요."
+                if Utils.numberOfMatches(str, regex: "window.alert\\(\\\"권한이 없습니다") > 0 {
+                   msg = "권한이 없습니다."
+                }
+                if Utils.numberOfMatches(str, regex: "window.alert\\(\\\"로그인 하세요") > 0 {
+                    msg = "로그인 하세요."
+                }
+                let alert = UIAlertController(title: "오류", message: msg, preferredStyle: .alert)
                 let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
                 alert.addAction(confirm)
                 DispatchQueue.main.sync {
@@ -623,25 +651,24 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 }
             }
             return
-        }
-        // 원하는 작업
-        NSLog("%@", jsonToArray)
-        self.articleData = ArticleData(json: jsonToArray)
-        DispatchQueue.main.sync {
-            // Cookie 처리
-            let wkDataStore = WKWebsiteDataStore.nonPersistent()
-            //쿠키를 담을 배열 sharedCookies
-            if httpSessionRequest.sharedCookies!.count > 0 {
-                //sharedCookies에서 쿠키들을 뽑아내서 wkDataStore에 넣는다.
-                for cookie in httpSessionRequest.sharedCookies! {
-                    wkDataStore.httpCookieStore.setCookie(cookie){}
+        } else {
+            self.articleData = ArticleData(result: str, type: boardType, isPNotice: isPNotice)
+            DispatchQueue.main.sync {
+                // Cookie 처리
+                let wkDataStore = WKWebsiteDataStore.nonPersistent()
+                //쿠키를 담을 배열 sharedCookies
+                if httpSessionRequest.sharedCookies!.count > 0 {
+                    //sharedCookies에서 쿠키들을 뽑아내서 wkDataStore에 넣는다.
+                    for cookie in httpSessionRequest.sharedCookies! {
+                        wkDataStore.httpCookieStore.setCookie(cookie){}
+                    }
                 }
+                config = WKWebViewConfiguration()
+                config!.websiteDataStore = wkDataStore
+                
+                self.makeWebContent(httpSessionRequest)
+                self.tableView.reloadData()
             }
-            config = WKWebViewConfiguration()
-            config!.websiteDataStore = wkDataStore
-            
-            self.makeWebContent(httpSessionRequest)
-            self.tableView.reloadData()
         }
     }
     

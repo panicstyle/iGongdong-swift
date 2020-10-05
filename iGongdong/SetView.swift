@@ -10,7 +10,7 @@ import UIKit
 import os.log
 
 protocol SetViewDelegate {
-    
+    func setView(_ setView: SetView, didSaved sender: Any)
 }
 
 class SetView : UIViewController, LoginToServiceDelegate {
@@ -28,6 +28,8 @@ class SetView : UIViewController, LoginToServiceDelegate {
     @IBOutlet var swPush : UISwitch!
     @IBOutlet var swNotice : UISwitch!
 
+    var delegate: SetViewDelegate?
+    
     override func viewDidLoad() {
         self.title = "설정"
         
@@ -116,6 +118,7 @@ class SetView : UIViewController, LoginToServiceDelegate {
     func loginToService(_ loginToService: LoginToService, pushWithSuccess result: String) {
         print("push success")
         DispatchQueue.main.async {
+            self.delegate?.setView(self, didSaved: self)
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -123,6 +126,7 @@ class SetView : UIViewController, LoginToServiceDelegate {
     func loginToService(_ loginToService: LoginToService, pushWithFail result: String) {
         print("push fail")
         DispatchQueue.main.async {
+            self.delegate?.setView(self, didSaved: self)
             self.navigationController?.popViewController(animated: true)
         }
     }

@@ -24,6 +24,16 @@ extension String {
       let end = index(start, offsetBy: aRange.length)
       return String(self[start..<end])
     }
+    
+    func removeSuffix() -> String {
+        if self.count > 0 {
+            let start = index(startIndex, offsetBy: 0)
+            let end = index(start, offsetBy: self.count - 1)
+            return String(self[start..<end])
+        } else {
+            return self
+        }
+    }
 }
 
 extension UIImageView {
@@ -217,102 +227,6 @@ struct BoardData {
 
             let boardData = Board.init(title: title, boardId: boardId, type: type, isNew: isNew, isCal: isCal)
             self.boardList.append(boardData!)
-        }
-    }
-}
-
-//MARK: - CommentItem
-
-struct  CommentItem {
-    var isRe: String = ""
-    var no: String = ""
-    var name: String = ""
-    var date: String = ""
-    var comment: String = ""
-}
-
-//MARK: - ImageItem
-
-struct  ImageItem {
-    var fileName: String = ""
-    var link: String = ""
-}
-
-//MARK: - AttachItem
-
-struct  AttachItem {
-    var fileName: String = ""
-    var fileSeq: String = ""
-    var link: String = ""
-}
-
-//MARK: - ArticleData
-
-struct ArticleData {
-    var subject: String = ""
-    var name: String = ""
-    var date: String = ""
-    var hit: String = ""
-    var content: String = ""
-    var profile: String = ""
-    var commentList = [CommentItem]()
-    var imageList = [ImageItem]()
-    var attachList = [AttachItem]()
-
-    init?() {
-        return nil
-    }
-    
-    init?(json: [String: Any]) {
-        // The name must not be empty
-        guard !json.isEmpty else {
-            return nil
-        }
-
-        // Initialization should fail if there is no name or if the rating is negative.
-        if json.isEmpty  {
-            return nil
-        }
-        guard
-            let boardTitle = json["boardTitle"] as? String,
-            let userNick = json["userNick"] as? String,
-            let boardRegister_dt = json["boardRegister_dt"] as? String,
-            let boardRead_cnt = json["boardRead_cnt"] as? String,
-            let boardContent = json["boardContent"] as? String,
-            let userComment = json["userComment"] as? String,
-            let memo = json["memo"] as? [[String: Any]],
-            let image = json["image"] as? [[String: Any]],
-            let attachment = json["attachment"] as? [[String: Any]]
-        else {
-            return nil
-        }
-        self.subject = boardTitle
-        self.name = userNick
-        self.date = boardRegister_dt
-        self.hit = boardRead_cnt
-        self.content = boardContent
-        self.profile = userComment
-        for itemIndex in memo {
-            var item = CommentItem()
-            item.isRe = itemIndex["memoDep"] as! String
-            item.no = itemIndex["memoSeq"] as! String
-            item.name = itemIndex["userNick"] as! String
-            item.date = itemIndex["memoRegister_dt"] as! String
-            item.comment = itemIndex["memoContent"] as! String
-            self.commentList.append(item)
-        }
-        for itemIndex in image {
-            var item = ImageItem()
-            item.fileName = itemIndex["fileName"] as! String
-            item.link = itemIndex["link"] as! String
-            self.imageList.append(item)
-        }
-        for itemIndex in attachment {
-            var item = AttachItem()
-            item.fileName = itemIndex["fileName"] as! String
-            item.fileSeq = itemIndex["fileSeq"] as! String
-            item.link = itemIndex["link"] as! String
-            self.attachList.append(item)
         }
     }
 }

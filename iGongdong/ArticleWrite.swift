@@ -26,11 +26,13 @@ class ArticleWrite: UIViewController, UITextViewDelegate, UIImagePickerControlle
     @IBOutlet var imageView3 : UIImageView!
     @IBOutlet var imageView4 : UIImageView!
     
+    var commId = ""
     var boardId = ""
     var boardNo = ""
     var strTitle = ""
     var strContent = ""
     var delegate: ArticleWriteDelegate?
+    var boardType: Int = 0
         
     var imageFileName = ["", "", "", "", "", ""]
     var fileName = ["", "", "", "", "", ""]

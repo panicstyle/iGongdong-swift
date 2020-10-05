@@ -269,19 +269,28 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
                 fatalError("The selected cell is not being displayed by the table")
             }
             let item = self.itemList[indexPath.row]
-            articleView.boardId = item.boardId
+            articleView.isPNotice = item.isPNotice
+            if item.isPNotice == 0 {
+                articleView.commId = commId
+                articleView.boardId = boardId
+            } else {
+                articleView.commId = item.commId
+                articleView.boardId = item.boardId
+            }
             articleView.boardNo = item.boardNo
+            articleView.boardType = boardType
             articleView.delegate = self;
             articleView.selectedRow = indexPath.row
         case "ArticleWrite":
             guard let articleWrite = segue.destination as? ArticleWrite else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            
+            articleWrite.commId = commId
             articleWrite.boardId = self.boardId
             articleWrite.boardNo = ""
             articleWrite.strTitle = ""
             articleWrite.strContent = ""
+            articleWrite.boardType = boardType
             articleWrite.delegate = self
         default:
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")

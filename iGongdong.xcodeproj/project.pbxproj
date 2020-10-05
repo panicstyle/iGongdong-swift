@@ -22,6 +22,7 @@
 		EC86FCF224A754A500E2D337 /* iGongdongTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86FCF124A754A500E2D337 /* iGongdongTests.swift */; };
 		EC86FCFD24A78EE800E2D337 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86FCFC24A78EE800E2D337 /* MainView.swift */; };
 		ECA7C1A8250D12C50036D825 /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA7C1A7250D12C50036D825 /* ItemView.swift */; };
+		ECB08150252AE8A4006AC182 /* ArticleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB0814F252AE8A4006AC182 /* ArticleData.swift */; };
 		ECC42FF2250F1CA6006E9F67 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC42FF1250F1CA6006E9F67 /* LinkView.swift */; };
 		ECC42FF4250F32D6006E9F67 /* ArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC42FF3250F32D6006E9F67 /* ArticleView.swift */; };
 		ECCB6F64251B5EC900DCEF71 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCB6F63251B5EC900DCEF71 /* AboutView.swift */; };
@@ -70,6 +71,7 @@
 		EC86FCF324A754A500E2D337 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC86FCFC24A78EE800E2D337 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		ECA7C1A7250D12C50036D825 /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
+		ECB0814F252AE8A4006AC182 /* ArticleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleData.swift; sourceTree = "<group>"; };
 		ECC42FF1250F1CA6006E9F67 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
 		ECC42FF3250F32D6006E9F67 /* ArticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleView.swift; sourceTree = "<group>"; };
 		ECCB6F63251B5EC900DCEF71 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				ECCB6F63251B5EC900DCEF71 /* AboutView.swift */,
 				ECD9B71524ECC1A700B1B978 /* AppData.swift */,
 				EC86FCDA24A754A400E2D337 /* AppDelegate.swift */,
+				ECB0814F252AE8A4006AC182 /* ArticleData.swift */,
 				ECC42FF3250F32D6006E9F67 /* ArticleView.swift */,
 				ECF7BB852511E19E0081AE5B /* ArticleWrite.swift */,
 				EC86FCE324A754A400E2D337 /* Assets.xcassets */,
@@ -369,6 +372,7 @@
 				ECA7C1A8250D12C50036D825 /* ItemView.swift in Sources */,
 				ECF7BB882512EFE50081AE5B /* KeyboardObserver.swift in Sources */,
 				EC2911C7250B355300E61269 /* SetView.swift in Sources */,
+				ECB08150252AE8A4006AC182 /* ArticleData.swift in Sources */,
 				ECC42FF2250F1CA6006E9F67 /* LinkView.swift in Sources */,
 				EC7FF16C251A0CB20020E1CE /* SceneDelegate.swift in Sources */,
 				ECC42FF4250F32D6006E9F67 /* ArticleView.swift in Sources */,

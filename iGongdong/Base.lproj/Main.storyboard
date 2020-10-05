@@ -782,6 +782,9 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <connections>
+                                            <segue destination="v3U-P7-ezU" kind="show" identifier="Article" id="AUr-dc-lbY"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -1128,7 +1131,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Qqt-d2-6gT"/>
+        <segue reference="AUr-dc-lbY"/>
         <segue reference="Oge-md-dwg"/>
     </inferredMetricsTieBreakers>
     <resources>
