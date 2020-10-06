@@ -40,8 +40,17 @@ class Utils {
         let str2 = regex.stringByReplacingMatches(in: str, options: [], range: range, withTemplate: replace)
         return String(str2)
     }
+
+    static func replaceHtmlTag(_ str: String) -> String {
+        var str2 = self.replaceStringRegex(str, regex: "</p>", replace: "\n")
+        str2 = self.replaceStringRegex(str2, regex: "</div>", replace: "\n")
+        str2 = self.replaceStringRegex(str2, regex: "<br>", replace: "\n")
+        str2 = self.replaceStringRegex(str2, regex: "</br>", replace: "\n")
+        str2 = self.replaceStringRegex(str2, regex: "<br />", replace: "\n")
+        return str2
+    }
     
-    static func replaceOnlyHtmlTag(_ str: String) -> String {
+    static func removeHtmlTag(_ str: String) -> String {
         var str2 = self.replaceStringRegex(str, regex: "<!--.*?-->", replace: "")
         str2 = self.replaceStringRegex(str2, regex: "<.*?>", replace: "")
         str2 = str2.trimmingCharacters(in: .whitespacesAndNewlines)

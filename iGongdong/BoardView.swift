@@ -85,7 +85,7 @@ class BoardView : UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIBoard = "Board"
-        let cellILink = "Link"
+        let cellICal = "Cal"
         let cellITitle = "Title"
 
         let cell: UITableViewCell
@@ -97,7 +97,7 @@ class BoardView : UIViewController, UITableViewDelegate, UITableViewDataSource, 
             cell.textLabel?.font = UIFont.preferredFont(forTextStyle: .body)
         } else {
             if board!.isCal == 1 {
-                cell = tableView.dequeueReusableCell(withIdentifier: cellILink, for: indexPath)
+                cell = tableView.dequeueReusableCell(withIdentifier: cellICal, for: indexPath)
             } else {
                 cell = tableView.dequeueReusableCell(withIdentifier: cellIBoard, for: indexPath)
             }
@@ -144,18 +144,18 @@ class BoardView : UIViewController, UITableViewDelegate, UITableViewDataSource, 
             itemView.boardId = board!.boardId
             itemView.boardTitle = board!.title
             itemView.boardType = board!.type
-        case "Link":
-            guard let linkView = segue.destination as? LinkView else {
+        case "Cal":
+            guard let calView = segue.destination as? CalView else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
-            
             guard let indexPath = tableView.indexPathForSelectedRow else {
                 fatalError("The selected cell is not being displayed by the table")
             }
             let board = self.boardData?.boardList[indexPath.row]
-            linkView.linkName = board!.title
-            linkView.link = board!.boardId
-            linkView.config = config
+            calView.boardTitle = board!.title
+            calView.commId = commId
+            calView.boardId = board!.boardId
+            calView.config = config
         default:
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
         }

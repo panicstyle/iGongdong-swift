@@ -79,7 +79,11 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
         self.loadData()
         
         let db = DBInterface()
-        db.insert(commId: commId, boardId: boardId, boardNo: boardNo)
+        if commId == "ing" || commId == "edu" {
+            db.insert(commId: "center", boardId: boardId, boardNo: boardNo)
+        } else {
+            db.insert(commId: commId, boardId: boardId, boardNo: boardNo)
+        }
     }
 
     @objc func contentSizeCategoryDidChangeNotification() {
@@ -179,9 +183,7 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 labelName.text = item.name + " " + item.date
 
                 var comment = String(htmlEncodedString: item.comment)
-                if comment!.hasSuffix("\n") {
-                    comment = comment!.removeSuffix()
-                }
+                comment = comment?.trimmingCharacters(in: .whitespacesAndNewlines)
                 viewComment.text = comment
                 
                 labelName.font = footnoteFont
@@ -192,7 +194,8 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 let viewComment = cell.viewWithTag(302) as! UITextView
                 labelName.text = item.name + " " + item.date
 
-                let comment = String(htmlEncodedString: item.comment)
+                var comment = String(htmlEncodedString: item.comment)
+                comment = comment?.trimmingCharacters(in: .whitespacesAndNewlines)
                 viewComment.text = comment
 
                 labelName.font = footnoteFont
@@ -216,6 +219,10 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
             print("delete")
             self.deleteCommentConfirm(item)
         })
+        let modify: UIAlertAction = UIAlertAction(title: "댓글수정", style: .default, handler: { (alert: UIAlertAction!) in
+            print("modify")
+            self.modifyComment(item)
+        })
         let reply: UIAlertAction = UIAlertAction(title: "댓글답변", style: .default, handler: { (alert: UIAlertAction!) in
             print("reply")
             self.writeReComment(item)
@@ -232,6 +239,7 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
             print("cancelAction")
         })
         alert.addAction(delete)
+        alert.addAction(modify)
         alert.addAction(reply)
         alert.addAction(copy)
         alert.addAction(share)
@@ -586,8 +594,21 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
         })
         let showOneBrowser: UIAlertAction = UIAlertAction(title: "웹브라우저로 보기", style: .default, handler: { (alert: UIAlertAction!) in
             print("showOneBrowser")
-            let link = GlobalConst.ServerName + "/board-read.do?boardId=" + self.boardId + "&boardNo=" + self.boardNo + "&command=READ&page=1&categoryId=-1&rid=20"
-            guard let url = URL(string: "\(link)") else {
+            var resource = ""
+            if self.boardType == GlobalConst.CAFE_TYPE_NORMAL {
+                if self.isPNotice == 0 {
+                    resource = "\(GlobalConst.CafeName)/cafe.php?sort=\(self.boardId)&sub_sort=&page=1&startpage=1&keyfield=&key_bs=&p1=\(self.commId)&p2=&p3=&number=\(self.boardNo)&mode=view"
+                } else {
+                    resource = "\(GlobalConst.ServerName)/bbs/board.php?bo_table=\(self.boardId)&wr_id=\(self.boardNo)"
+
+                }
+            } else if self.boardType == GlobalConst.CAFE_TYPE_APPLY {
+                let escBoardId = String(self.boardId.addingPercentEncoding( withAllowedCharacters: .urlQueryAllowed) ?? "")
+                resource = "\(GlobalConst.ServerName)/bbs/board.php?bo_table=B691&sca=\(escBoardId)&wr_id=\(self.boardNo)"
+            } else {
+                resource = "\(GlobalConst.ServerName)/bbs/board.php?bo_table=\(self.boardId)&wr_id=\(self.boardNo)"
+            }
+            guard let url = URL(string: "\(resource)") else {
                 print("URL is nil")
                 return
             }
@@ -616,12 +637,13 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
     }
     
     func deleteArticle() {
-        let bodyString = "boardId=\(boardId)&page=1&categoryId=-1&time=1334217622773&returnBoardNo=\(boardNo)&boardNo=\(boardNo)&command=DELETE&totalPage=0&totalRecords=0&serialBadNick=&serialBadContent=&htmlImage=%%2Fout&thumbnailSize=50&memoWriteable=true&list_yn=N&replyList_yn=N&defaultBoardSkin=default&boardWidth=710&multiView_yn=Y&titleCategory_yn=N&category_yn=N&titleNo_yn=Y&titleIcon_yn=N&titlePoint_yn=N&titleMemo_yn=Y&titleNew_yn=Y&titleThumbnail_yn=N&titleNick_yn=Y&titleTag_yn=Y&anonymity_yn=N&titleRead_yn=Y&boardModel_cd=A&titleDate_yn=Y&tag_yn=Y&thumbnailSize=50&readOver_color=%%23336699&boardSerialBadNick=&boardSerialBadContent=&userPw=&userNick=&memoContent=&memoSeq=&pollSeq=&returnURI=&beforeCommand=&starPoint=&provenance=board-read.do&tagsName=&pageScale=&searchOrKey=&searchType=&tag=1"
+        let resource = "\(GlobalConst.CafeName)/cafe.php?mode=del&sort=\(boardId)&sub_sort=&p1=\(commId)&p2="
+        let bodyString = "number=\(boardNo)&passwd="
         
         let httpSessionRequest = HttpSessionRequest()
         httpSessionRequest.delegate = self
         httpSessionRequest.tag = GlobalConst.DELETE_ARTICLE
-        httpSessionRequest.requestWithParamString(httpMethod: "POST", resource: "\(GlobalConst.ServerName)/board-save.do", paramString: bodyString, referer: "\(GlobalConst.ServerName)/board-read.do")
+        httpSessionRequest.requestWithParamString(httpMethod: "POST", resource: resource, paramString: bodyString, referer: resource)
         
     }
     
@@ -675,7 +697,7 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
     func deleteArticleFinish(_ httpSessionRequest: HttpSessionRequest, _ data: Data) {
         let str = String(data: data, encoding: .utf8) ?? ""
         
-        if Utils.numberOfMatches(str, regex: "<b>시스템 메세지입니다</b>") > 0 {
+        if Utils.numberOfMatches(str, regex: "<meta http-equiv=\"refresh\" content=\"0;") <= 0 {
             let alert = UIAlertController(title: "글 삭제 오류", message: "글을 삭제할 수 없습니다. 잠시후 다시 해보세요.", preferredStyle: .alert)
             let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
             alert.addAction(confirm)
@@ -693,8 +715,10 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
     func modifyArticle() {
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let articleWrite = storyboard.instantiateViewController(withIdentifier: "ArticleWrite") as! ArticleWrite
+        articleWrite.commId = self.commId
         articleWrite.boardId = self.boardId
         articleWrite.boardNo = self.boardNo
+        articleWrite.boardType = self.boardType
         articleWrite.strTitle = editableSubject
         articleWrite.strContent = editableContent
         articleWrite.delegate = self
@@ -705,10 +729,28 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
     func writeComment() {
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let commentWrite = storyboard.instantiateViewController(withIdentifier: "CommentWrite") as! CommentWrite
+        commentWrite.commId = self.commId
         commentWrite.boardId = self.boardId
         commentWrite.boardNo = self.boardNo
+        commentWrite.boardType = self.boardType
+        commentWrite.isPNotice = self.isPNotice
         commentWrite.delegate = self
         commentWrite.mode = GlobalConst.WRITE_MODE
+        self.navigationController?.pushViewController(commentWrite, animated: true)
+    }
+
+    func modifyComment(_ item: CommentItem) {
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+        let commentWrite = storyboard.instantiateViewController(withIdentifier: "CommentWrite") as! CommentWrite
+        commentWrite.commId = self.commId
+        commentWrite.boardId = self.boardId
+        commentWrite.boardNo = self.boardNo
+        commentWrite.boardType = self.boardType
+        commentWrite.isPNotice = self.isPNotice
+        commentWrite.commentNo = item.no
+        commentWrite.content = item.comment
+        commentWrite.delegate = self
+        commentWrite.mode = GlobalConst.MODIFY_MODE
         self.navigationController?.pushViewController(commentWrite, animated: true)
     }
     
@@ -722,27 +764,62 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
         alert.addAction(cancel)
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     func deleteComment(_ item: CommentItem) {
-        let bodyString = "boardId=\(boardId)&page=1&categoryId=-1&time=&returnBoardNo=\(boardNo)&boardNo=\(boardNo)&command=MEMO_DELETE&totalPage=0&totalRecords=0&serialBadNick=&serialBadContent=&htmlImage=%%2Fout&thumbnailSize=50&memoWriteable=true&list_yn=N&replyList_yn=N&defaultBoardSkin=default&boardWidth=710&multiView_yn=Y&titleCategory_yn=N&category_yn=N&titleNo_yn=Y&titleIcon_yn=N&titlePoint_yn=N&titleMemo_yn=Y&titleNew_yn=Y&titleThumbnail_yn=N&titleNick_yn=Y&titleTag_yn=Y&anonymity_yn=N&titleRead_yn=Y&boardModel_cd=A&titleDate_yn=Y&tag_yn=Y&thumbnailSize=50&readOver_color=%%23336699&boardSerialBadNick=&boardSerialBadContent=&userPw=&userNick=&memoContent=&memoSeq=\(item.no)&pollSeq=&returnURI=&beforeCommand=&starPoint=&provenance=board-read.do&tagsName=&pageScale=&searchOrKey=&searchType=&tag=1"
+        if boardType == GlobalConst.CAFE_TYPE_NORMAL {
+            if isPNotice == 0 {
+                deleteCommentNormal(item)
+            } else {
+                deleteCommentNotice(item)
+            }
+        } else {
+            deleteCommentNotice(item)
+        }
+    }
+
+    func deleteCommentNormal(_ item: CommentItem) {
+        let resource = "\(GlobalConst.CafeName)/cafe.php?mode=del_reply&sort=\(boardId)&sub_sort=&p1=\(commId)&p2="
+        let bodyString = "number=\(item.no)&passwd="
         
         let httpSessionRequest = HttpSessionRequest()
         httpSessionRequest.delegate = self
         httpSessionRequest.tag = GlobalConst.DELETE_COMMENT
-        httpSessionRequest.requestWithParamString(httpMethod: "POST", resource: "\(GlobalConst.ServerName)/memo-save.do", paramString: bodyString, referer: "\(GlobalConst.ServerName)/board-read.do")
+        httpSessionRequest.requestWithParamString(httpMethod: "POST", resource: resource, paramString: bodyString, referer: resource)
+    }
+    
+    func deleteCommentNotice(_ item: CommentItem) {
+        let resource = "\(GlobalConst.ServerName)/bbs/\(item.deleteLink)"
+        let bodyString = ""
+        
+        let httpSessionRequest = HttpSessionRequest()
+        httpSessionRequest.delegate = self
+        httpSessionRequest.tag = GlobalConst.DELETE_COMMENT_NOTICE
+        httpSessionRequest.requestWithParamString(httpMethod: "GET", resource: resource, paramString: bodyString, referer: resource)
     }
     
     func deleteCommentFinish(_ httpSessionRequest: HttpSessionRequest, _ data: Data) {
-        let str = String(data: data, encoding: .utf8) ?? ""
-        
-        if Utils.numberOfMatches(str, regex: "<b>시스템 메세지입니다</b>") > 0 {
-            let alert = UIAlertController(title: "댓글 삭제 오류", message: "댓글을 삭제할 수 없습니다. 잠시후 다시 해보세요.", preferredStyle: .alert)
-            let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
-            alert.addAction(confirm)
-            DispatchQueue.main.sync {
-                self.present(alert, animated: true, completion: nil)
+        if httpSessionRequest.tag == GlobalConst.DELETE_COMMENT {
+            let str = String(data: data, encoding: .utf8) ?? ""
+            if Utils.numberOfMatches(str, regex: "<b>시스템 메세지입니다</b>") > 0 {
+                let alert = UIAlertController(title: "댓글 삭제 오류", message: "댓글을 삭제할 수 없습니다. 잠시후 다시 해보세요.", preferredStyle: .alert)
+                let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
+                alert.addAction(confirm)
+                DispatchQueue.main.sync {
+                    self.present(alert, animated: true, completion: nil)
+                }
+                return
             }
-            return
+        } else {
+            let str = String(data: data, encoding: .utf8) ?? ""
+            if Utils.numberOfMatches(str, regex: "<title>오류안내 페이지") > 0 {
+                let alert = UIAlertController(title: "댓글 삭제 오류", message: "댓글을 삭제할 수 없습니다. 잠시후 다시 해보세요.", preferredStyle: .alert)
+                let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
+                alert.addAction(confirm)
+                DispatchQueue.main.sync {
+                    self.present(alert, animated: true, completion: nil)
+                }
+                return
+            }
         }
         DispatchQueue.main.sync {
             if selectedCommentRow >= 0 {
@@ -758,9 +835,12 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
     func writeReComment(_ item: CommentItem) {
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let commentWrite = storyboard.instantiateViewController(withIdentifier: "CommentWrite") as! CommentWrite
+        commentWrite.commId = self.commId
         commentWrite.boardId = self.boardId
         commentWrite.boardNo = self.boardNo
         commentWrite.commentNo = item.no
+        commentWrite.boardType = self.boardType
+        commentWrite.isPNotice = self.isPNotice
         commentWrite.delegate = self
         commentWrite.mode = GlobalConst.REPLY_MODE
         self.navigationController?.pushViewController(commentWrite, animated: true)

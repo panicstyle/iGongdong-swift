@@ -80,7 +80,7 @@ struct ItemData {
             let comment = Utils.findStringRegex(subject, regex: "(?<=<span class=\\\"cnt_cmt\\\">).*?(?=</span>)")
             
             subject = Utils.replaceStringRegex(subject, regex: "(<span class=\\\"sound).*?(개</span>)", replace: "")
-            subject = Utils.replaceOnlyHtmlTag(subject)
+            subject = Utils.removeHtmlTag(subject)
 
             let isNew = 0
             
@@ -165,7 +165,7 @@ struct ItemData {
             }
             
             subject = Utils.replaceStringRegex(subject, regex: "(<span class=\\\"sound).*?(개</span>)", replace: "")
-            subject = Utils.replaceOnlyHtmlTag(subject)
+            subject = Utils.removeHtmlTag(subject)
             if type == GlobalConst.CAFE_TYPE_APPLY {
                 subject = "\(status) \(subject)"
             } else {
@@ -181,12 +181,12 @@ struct ItemData {
             var hit = ""
             if type == GlobalConst.CAFE_TYPE_APPLY {
                 name = Utils.findStringRegex(matchstr, regex: "(?<=<td class=\\\"td_name sv_use\\\">).*?(?=</td>)")
-                name = Utils.replaceOnlyHtmlTag(name)
+                name = Utils.removeHtmlTag(name)
                 date = Utils.findStringRegex(matchstr, regex: "(?<=<td class=\\\"td_name \\\">).*?(?=</td>)")
                 hit = Utils.findStringRegex(matchstr, regex: "(?<=<td class=\\\"td_num\\\">).*?(?=</td>)")
             } else {
                 name = Utils.findStringRegex(matchstr, regex: "(?<=<td class=\\\"td_name sv_use\\\">).*?(?=</td>)")
-                name = Utils.replaceOnlyHtmlTag(name)
+                name = Utils.removeHtmlTag(name)
                 date = Utils.findStringRegex(matchstr, regex: "(?<=<td class=\\\"td_date\\\">).*?(?=</td>)")
                 hit = Utils.findStringRegex(matchstr, regex: "(?<=<td class=\\\"td_num\\\">).*?(?=</td>)")
             }
@@ -239,7 +239,7 @@ struct ItemData {
             let commId = ""
             
             subject = Utils.replaceStringRegex(subject, regex: "(<span class=\\\"sound).*?(개</span>)", replace: "")
-            subject = Utils.replaceOnlyHtmlTag(subject)
+            subject = Utils.removeHtmlTag(subject)
 
             let isNew = 0
             
@@ -298,7 +298,7 @@ struct ItemData {
             
             var subject = ""
             subject = Utils.findStringRegex(matchstr, regex: "(<td class=\"subject).*?(</a>)")
-            subject = Utils.replaceOnlyHtmlTag(subject)
+            subject = Utils.removeHtmlTag(subject)
             
             let link = Utils.findStringRegex(matchstr, regex: "(?<=<a href=\\\").*?(?=\\\")")
             var commId = ""
@@ -333,11 +333,11 @@ struct ItemData {
             } else {
                 id = Utils.findStringRegex(matchstr, regex: "(?<=javascript:ui\\(').*?(?=')")
                 name = Utils.findStringRegex(matchstr, regex: "(<!-- 사용자 이름 표시 부분-->).*?(</div>)")
-                name = Utils.replaceOnlyHtmlTag(name)
+                name = Utils.removeHtmlTag(name)
             }
             
             var date = Utils.findStringRegex(matchstr, regex: "(<td class=\"date).*?(</td>)")
-            date = Utils.replaceOnlyHtmlTag(date)
+            date = Utils.removeHtmlTag(date)
             
             let hit = Utils.findStringRegex(matchstr, regex: "(<td class=\"hit).*?(</td>)")
             
@@ -388,7 +388,7 @@ struct ItemData {
             
             var subject = ""
             subject = Utils.findStringRegex(matchstr, regex: "(<span style=\\\"font-size:9pt;\\\">)(.|\\n)*?(</span>)")
-            subject = Utils.replaceOnlyHtmlTag(subject)
+            subject = Utils.removeHtmlTag(subject)
             
             let link = Utils.findStringRegex(matchstr, regex: "(?<=<a href=\\\")(.|\\n)*?(?=\\\")")
             let commId = Utils.findStringRegex(link, regex: "(?<=&p1=).*?(?=&)")
@@ -407,7 +407,7 @@ struct ItemData {
             
             let date = ""
             var hit = Utils.findStringRegex(matchstr, regex: "(?<=<font face=\"Tahoma\"><b>\\[)(.|\\n)*?(?=\\]</b>)")
-            hit = Utils.replaceOnlyHtmlTag(hit)
+            hit = Utils.removeHtmlTag(hit)
             
             let picLink = Utils.findStringRegex(matchstr, regex: "(?<=background=\\\")(.|\\n)*?(?=\\\")")
             

@@ -269,7 +269,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fgN-L9-TcJ">
-                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="692"/>
                                 <viewLayoutGuide key="contentLayoutGuide" id="I2a-Xd-pco"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="m0Q-Bv-Lgc"/>
                             </scrollView>
@@ -293,7 +293,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="21f-UZ-6nQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="92.753623188405811" y="879.91071428571422"/>
+            <point key="canvasLocation" x="92.753623188405811" y="879.61956521739137"/>
         </scene>
         <!--Article Write-->
         <scene sceneID="csM-MM-HRR">
@@ -503,7 +503,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Link" textLabel="RWN-Ms-eHz" style="IBUITableViewCellStyleDefault" id="iIF-3a-UqN">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cal" textLabel="RWN-Ms-eHz" style="IBUITableViewCellStyleDefault" id="iIF-3a-UqN">
                                         <rect key="frame" x="0.0" y="115.33333587646484" width="414" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iIF-3a-UqN" id="4fJ-sD-8Bl">
@@ -520,7 +520,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="GgF-2D-lYt" kind="show" identifier="Link" id="Oge-md-dwg"/>
+                                            <segue destination="916-it-g7e" kind="show" identifier="Cal" id="Rlo-Ns-hLK"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -816,6 +816,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="bannerView" destination="8Q0-Nc-u0f" id="vz3-Sh-mKH"/>
+                        <outlet property="newArticle" destination="Xsi-Uv-qQv" id="N99-2X-cAU"/>
                         <outlet property="tableView" destination="Dvs-jQ-F8y" id="YWn-nQ-CD2"/>
                     </connections>
                 </viewController>
@@ -1129,10 +1130,44 @@
             </objects>
             <point key="canvasLocation" x="-1365" y="150"/>
         </scene>
+        <!--Cal View-->
+        <scene sceneID="Jfm-ms-0r2">
+            <objects>
+                <viewController id="916-it-g7e" customClass="CalView" customModule="iGongdong" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rgm-oa-0Zv">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ct-VP-Gdd">
+                                <rect key="frame" x="0.0" y="44" width="414" height="692"/>
+                                <viewLayoutGuide key="contentLayoutGuide" id="al3-B5-8mb"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="YYA-dJ-3JM"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="dp2-0h-Ucg"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="5ct-VP-Gdd" firstAttribute="leading" secondItem="dp2-0h-Ucg" secondAttribute="leading" id="KfP-R9-Pnq"/>
+                            <constraint firstItem="5ct-VP-Gdd" firstAttribute="top" secondItem="dp2-0h-Ucg" secondAttribute="top" id="nZR-03-Ksb"/>
+                            <constraint firstItem="5ct-VP-Gdd" firstAttribute="trailing" secondItem="dp2-0h-Ucg" secondAttribute="trailing" id="r7C-XU-FEx"/>
+                            <constraint firstAttribute="bottom" secondItem="5ct-VP-Gdd" secondAttribute="bottom" id="uFl-LN-6hb"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="EbN-wg-h0C">
+                        <barButtonItem key="rightBarButtonItem" title="메뉴" id="35C-BV-vLw"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="btnMenu" destination="35C-BV-vLw" id="1Y3-aP-WeA"/>
+                        <outlet property="mainView" destination="5ct-VP-Gdd" id="OG9-Kb-9bS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gkc-bR-uzE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="120" y="-514"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="AUr-dc-lbY"/>
-        <segue reference="Oge-md-dwg"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="ic_image" width="24" height="24"/>

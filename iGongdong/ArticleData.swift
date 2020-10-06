@@ -70,13 +70,13 @@ struct ArticleData {
         let result2 = Utils.replaceStringRegex(result, regex: "\r\n", replace: "\n")
         
         var subject = Utils.findStringRegex(result2, regex: "(?<=<div style=\"margin-right:10; margin-left:10;\"><B>).*?(?=</div>)")
-        subject = Utils.replaceOnlyHtmlTag(subject)
+        subject = Utils.removeHtmlTag(subject)
         
         var name = Utils.findStringRegex(result2, regex: "(<div align=\"right\"><b>작성자 : <a).*?(</a>)")
-        name = Utils.replaceOnlyHtmlTag(name)
+        name = Utils.removeHtmlTag(name)
         
         var date = Utils.findStringRegex(result2, regex: "(입력 : <span title=).*?(</span>)")
-        date = Utils.replaceOnlyHtmlTag(date)
+        date = Utils.removeHtmlTag(date)
         date = Utils.replaceStringRegex(date, regex: "입력 : ", replace: "")
         date = Utils.replaceStringRegex(date, regex: "(\\().*?(\\))", replace: "")
         
@@ -127,10 +127,10 @@ struct ArticleData {
             let no = Utils.findStringRegex(matchstr, regex: "(?<=&number=).*?(?=')")
             
             var name = Utils.findStringRegex(matchstr, regex: "(<font color=\"black\"><a href=\"javascript:ui).*?(</a>)")
-            name = Utils.replaceOnlyHtmlTag(name)
+            name = Utils.removeHtmlTag(name)
             
             var date = Utils.findStringRegex(matchstr, regex: "(<span title=\").*?(</span>)")
-            date = Utils.replaceOnlyHtmlTag(date)
+            date = Utils.removeHtmlTag(date)
             date = Utils.replaceStringRegex(date, regex: "/ ", replace: "")
             
             var comment = ""
@@ -154,10 +154,10 @@ struct ArticleData {
         let result2 = Utils.replaceStringRegex(result, regex: "\r\n", replace: "\n")
         
         var subject = Utils.findStringRegex(result2, regex: "(?<=<h1 id=\\\"bo_v_title\\\">).*?(?=</h1>)")
-        subject = Utils.replaceOnlyHtmlTag(subject)
+        subject = Utils.removeHtmlTag(subject)
         
         var name = Utils.findStringRegex(result2, regex: "(?<=<span class=\\\"sv_member\\\">).*?(?=</span>)")
-        name = Utils.replaceOnlyHtmlTag(name)
+        name = Utils.removeHtmlTag(name)
         
         let date = Utils.findStringRegex(result2, regex: "(?<=작성일</span><strong>).*?(?=</strong>)")
         let hit = Utils.findStringRegex(result2, regex: "(?<=조회<strong>).*?(?=회</strong>)")
@@ -203,11 +203,10 @@ struct ArticleData {
             let name = Utils.findStringRegex(matchstr, regex: "(?<=<span class=\\\"member\\\">).*?(?=</span>)")
             
             var date = Utils.findStringRegex(matchstr, regex: "(<time datetime=).*?(</time>)")
-            date = Utils.replaceOnlyHtmlTag(date)
+            date = Utils.removeHtmlTag(date)
             date = Utils.replaceStringRegex(date, regex: "/ ", replace: "")
             
-            var comment =  Utils.findStringRegex(matchstr, regex: "(<!-- 댓글 출력 -->).*?(<!-- 수정 -->)")
-            comment = Utils.replaceOnlyHtmlTag(comment)
+            let comment =  Utils.findStringRegex(matchstr, regex: "(<!-- 댓글 출력 -->).*?(<!-- 수정 -->)")
             
             var deleteLink = Utils.findStringRegex(matchstr, regex: "(./delete_comment.php).*?(page=)")
             deleteLink = Utils.replaceStringRegex(deleteLink, regex: "&amp;", replace: "&")
@@ -228,10 +227,10 @@ struct ArticleData {
         for match  in matchs {
             let matchstr = result[match.range]
             
-            var key = Utils.findStringRegex(matchstr, regex: "(?<=href=\").*?(?=\">)")
+            var key = Utils.findStringRegex(matchstr, regex: "(?<=href=\").*?(?=\")")
             key = Utils.replaceStringRegex(key, regex: "&amp;", replace: "&")
             
-            var value = Utils.findStringRegex(matchstr, regex: "(?<=\">).*?(?=<span class)")
+            var value = Utils.findStringRegex(matchstr, regex: "(?<=<strong>).*?(?=</strong>)")
             value = value.trimmingCharacters(in: .whitespaces)
             
             var attachItem = AttachItem()

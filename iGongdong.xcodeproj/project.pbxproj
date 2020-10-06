@@ -32,6 +32,7 @@
 		ECD9B71624ECC1A700B1B978 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9B71524ECC1A700B1B978 /* AppData.swift */; };
 		ECD9B71824ED007300B1B978 /* GlobalConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9B71724ED007300B1B978 /* GlobalConst.swift */; };
 		ECDA63BA2519AEAB0053B8A1 /* DBInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDA63B92519AEAB0053B8A1 /* DBInterface.swift */; };
+		ECEBD21C252CB93500ECC455 /* CalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECEBD21B252CB93500ECC455 /* CalView.swift */; };
 		ECF7BB862511E19E0081AE5B /* ArticleWrite.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF7BB852511E19E0081AE5B /* ArticleWrite.swift */; };
 		ECF7BB882512EFE50081AE5B /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF7BB872512EFE50081AE5B /* KeyboardObserver.swift */; };
 /* End PBXBuildFile section */
@@ -81,6 +82,7 @@
 		ECD9B71524ECC1A700B1B978 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		ECD9B71724ED007300B1B978 /* GlobalConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConst.swift; sourceTree = "<group>"; };
 		ECDA63B92519AEAB0053B8A1 /* DBInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBInterface.swift; sourceTree = "<group>"; };
+		ECEBD21B252CB93500ECC455 /* CalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalView.swift; sourceTree = "<group>"; };
 		ECF7BB852511E19E0081AE5B /* ArticleWrite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleWrite.swift; sourceTree = "<group>"; };
 		ECF7BB872512EFE50081AE5B /* KeyboardObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -156,6 +158,7 @@
 				ECF7BB852511E19E0081AE5B /* ArticleWrite.swift */,
 				EC86FCE324A754A400E2D337 /* Assets.xcassets */,
 				ECD7FF4024F6B78D0008F0F3 /* BoardView.swift */,
+				ECEBD21B252CB93500ECC455 /* CalView.swift */,
 				EC62F8402518CF6B00452C93 /* CommentWrite.swift */,
 				ECDA63B92519AEAB0053B8A1 /* DBInterface.swift */,
 				ECD9B71724ED007300B1B978 /* GlobalConst.swift */,
@@ -361,6 +364,7 @@
 				ECD9B71224ECB40B00B1B978 /* HttpSessionRequest.swift in Sources */,
 				ECDA63BA2519AEAB0053B8A1 /* DBInterface.swift in Sources */,
 				EC62F8412518CF6B00452C93 /* CommentWrite.swift in Sources */,
+				ECEBD21C252CB93500ECC455 /* CalView.swift in Sources */,
 				ECCB6F64251B5EC900DCEF71 /* AboutView.swift in Sources */,
 				EC86FCDB24A754A400E2D337 /* AppDelegate.swift in Sources */,
 				ECD9B71624ECC1A700B1B978 /* AppData.swift in Sources */,

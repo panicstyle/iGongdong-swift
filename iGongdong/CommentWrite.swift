@@ -21,9 +21,13 @@ class CommentWrite: UIViewController, UITextViewDelegate, UINavigationController
     @IBOutlet var textField : UITextField!
     @IBOutlet var textView : UITextView!
 
+    var isPNotice = 0
+    var boardType = 0
+    var commId = ""
     var boardId = ""
     var boardNo = ""
     var commentNo = ""
+    var content = ""
     var delegate: CommentWriteDelegate?
     
     var mode = GlobalConst.WRITE_MODE
@@ -55,7 +59,14 @@ class CommentWrite: UIViewController, UITextViewDelegate, UINavigationController
         
         textView.font = bodyFont
         
-        self.title = "댓글쓰기"
+        if mode == GlobalConst.WRITE_MODE {
+            self.title = "댓글쓰기"
+        } else if mode == GlobalConst.MODIFY_MODE {
+            self.title = "댓글수정"
+            textView.text = String(htmlEncodedString: content)
+        } else {
+            self.title = "댓글답변쓰기"
+        }
         
         textView.delegate = self
         textViewSetupView()
@@ -115,17 +126,50 @@ class CommentWrite: UIViewController, UITextViewDelegate, UINavigationController
     // MARK: - HttpSessionRequestDelegate
     
     func httpSessionRequest(_ httpSessionRequest: HttpSessionRequest, didFinishLodingData data: Data) {
-        let str = String(data: data, encoding: .utf8) ?? ""
-        if Utils.numberOfMatches(str, regex: "<b>시스템 메세지입니다</b>") > 0 {
-            var errMsg = Utils.findStringRegex(str, regex: "(?<=<b>시스템 메세지입니다</b></font><br>).*?(?=<br>)")
-            errMsg = "댓글 작성중 오류가 발생했습니다. 잠시후 다시 해보세요.[\(errMsg)]"
-            
-            let alert = UIAlertController(title: "댓글 작성 오류", message: errMsg, preferredStyle: .alert)
-            let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
-            alert.addAction(confirm)
-            DispatchQueue.main.sync {
-                self.present(alert, animated: true, completion: nil)
+        if httpSessionRequest.tag == GlobalConst.POST_DATA {
+            let str = String(data: data, encoding: .utf8) ?? ""
+            if Utils.numberOfMatches(str, regex: "<meta http-equiv=\"refresh\" content=\"0;") <= 0 {
+                var errMsg = Utils.findStringRegex(str, regex: "(?<=window.alert\\(\\\").*?(?=\\\")")
+                errMsg = "댓글 작성중 오류가 발생했습니다. 잠시후 다시 해보세요.[\(errMsg)]"
+                
+                let alert = UIAlertController(title: "댓글 작성 오류", message: errMsg, preferredStyle: .alert)
+                let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
+                alert.addAction(confirm)
+                DispatchQueue.main.sync {
+                    self.present(alert, animated: true, completion: nil)
+                }
+                return
             }
+        } else if httpSessionRequest.tag == GlobalConst.POST_NOTICE {
+            let str = String(data: data, encoding: .utf8) ?? ""
+            if Utils.numberOfMatches(str, regex: "<title>오류안내 페이지") > 0 {
+                var errMsg = Utils.findStringRegex(str, regex: "(<p class=\\\"cbg\\\">).*?(</p>)")
+                errMsg = "댓글 작성중 오류가 발생했습니다. 잠시후 다시 해보세요.[\(errMsg)]"
+                
+                let alert = UIAlertController(title: "댓글 작성 오류", message: errMsg, preferredStyle: .alert)
+                let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
+                alert.addAction(confirm)
+                DispatchQueue.main.sync {
+                    self.present(alert, animated: true, completion: nil)
+                }
+                return
+            }
+        } else {    // GET_TOKEN
+            let str = String(data: data, encoding: .utf8) ?? ""
+            let token = Utils.findStringRegex(str, regex: "(?<=\\\":\\\").*?(?=\\\")")
+            if token == "" {
+                var errMsg = "토큰 오류"
+                errMsg = "댓글 작성중 오류가 발생했습니다. 잠시후 다시 해보세요.[\(errMsg)]"
+                
+                let alert = UIAlertController(title: "댓글 작성 오류", message: errMsg, preferredStyle: .alert)
+                let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
+                alert.addAction(confirm)
+                DispatchQueue.main.sync {
+                    self.present(alert, animated: true, completion: nil)
+                }
+                return
+            }
+            self.postDoNotice(token: token)
             return
         }
         DispatchQueue.main.sync {
@@ -170,26 +214,75 @@ class CommentWrite: UIViewController, UITextViewDelegate, UINavigationController
             self.present(alert, animated: true, completion: nil)
             return
         }
-        postDo()
+        
+        if boardType == GlobalConst.CAFE_TYPE_NORMAL {
+            if isPNotice == 0 {
+                postDoNormal()
+            } else {
+                getToken()
+            }
+        } else {
+            getToken()
+        }
     }
     
-    private func postDo() {
-        
-        var command = "MEMO_WRITE"
-        var referer = "\(GlobalConst.ServerName)/board-api-read.do"
-        if mode == GlobalConst.REPLY_MODE {
-            command = "MEMO_REPLY"
-            referer = "\(GlobalConst.ServerName)/board-api-read.do?boardId=\(boardId)&boardNo=\(boardNo)&command=READ&page=1&categoryId=-1"
+    private func postDoNormal() {
+        var resource = ""
+        if mode == GlobalConst.WRITE_MODE || mode == GlobalConst.REPLY_MODE {
+            resource = "\(GlobalConst.CafeName)/cafe.php?mode=up_add&sort=\(boardId)&sub_sort=&p1=\(commId)&p2="
+        } else {
+            resource = "\(GlobalConst.CafeName)/cafe.php?mode=edit_reply&sort=\(boardId)&sub_sort=&p1=\(commId)&p2="
         }
         
-        var escContent: String = textView.text!
-        escContent = escContent.replacingOccurrences(of: "\n", with: "<br />")
+        let escContent: String = textView.text!
         
-        let bodyString = "boardId=\(boardId)&page=1&categoryId=-1&time=&returnBoardNo=\(boardNo)&boardNo=\(boardNo)&command=\(command)&totalPage=0&totalRecords=0&serialBadNick=&serialBadContent=&htmlImage=%%2Fout&thumbnailSize=50&memoWriteable=true&list_yn=N&replyList_yn=N&defaultBoardSkin=default&boardWidth=690&multiView_yn=Y&titleCategory_yn=N&category_yn=N&titleNo_yn=Y&titleIcon_yn=N&titlePoint_yn=N&titleMemo_yn=Y&titleNew_yn=Y&titleThumbnail_yn=N&titleNick_yn=Y&titleTag_yn=Y&anonymity_yn=N&titleRead_yn=Y&boardModel_cd=A&titleDate_yn=Y&tag_yn=Y&thumbnailSize=50&readOver_color=%%23336699&boardSerialBadNick=&boardSerialBadContent=&userPw=&userNick=&memoContent=\(escContent)&memoSeq=\(commentNo)&pollSeq=&returnURI=&beforeCommand=&starPoint=&provenance=board-read.do&tagsName=&pageScale=&searchOrKey=&searchType=&tag=1"
+        var bodyString = ""
+        switch mode {
+        case GlobalConst.WRITE_MODE:
+            bodyString = "number=\(boardNo)&content=\(escContent)"
+        case GlobalConst.MODIFY_MODE:
+            bodyString = "number=\(commentNo)&content=\(escContent)"
+        default: // REPLY_MODE
+            bodyString = "number=\(boardNo)&number_re=\(commentNo)&content=\(escContent)"
+        }
         
         let httpSessionRequest = HttpSessionRequest()
         httpSessionRequest.delegate = self
         httpSessionRequest.tag = GlobalConst.POST_DATA
-        httpSessionRequest.requestWithParamString(httpMethod: "POST", resource: "\(GlobalConst.ServerName)/memo-save.do", paramString: bodyString, referer: referer)
+        httpSessionRequest.requestWithParamString(httpMethod: "POST", resource: resource, paramString: bodyString, referer: resource)
     }
+
+    private func getToken() {
+        let timeInMS = floor(Date.timeIntervalBetween1970AndReferenceDate * 1000)
+        let resource = "http://www.gongdong.or.kr/bbs/ajax.comment_token.php?_=\(timeInMS)"
+        let httpSessionRequest = HttpSessionRequest()
+        httpSessionRequest.delegate = self
+        httpSessionRequest.tag = GlobalConst.GET_TOKEN
+        httpSessionRequest.requestWithParamString(httpMethod: "GET", resource: resource, paramString: "", referer: resource)
+    }
+
+    private func postDoNotice(token: String) {
+        var wMode = ""
+        switch mode {
+        case GlobalConst.WRITE_MODE:
+            wMode = "c"
+            commentNo = ""
+        case GlobalConst.MODIFY_MODE:
+            wMode = "cu"
+        default: // REPLY_MODE
+            wMode = "c"
+        }
+        
+        let escContent: String = textView.text!
+        
+        let bodyString = "token=\(token)&w=\(wMode)&bo_table=\(boardId)&wr_id=\(boardNo)&comment_id=\(commentNo)&sca=&sfl=&stx=&spt=&page=&is_good=0&wr_content=\(escContent)"
+        
+        let referer = "\(GlobalConst.ServerName)/bbs/board.php?bo_table=\(boardId)&wr_id=\(boardNo)"
+        
+        let httpSessionRequest = HttpSessionRequest()
+        httpSessionRequest.delegate = self
+        httpSessionRequest.tag = GlobalConst.POST_NOTICE
+        httpSessionRequest.requestWithParamString(httpMethod: "POST", resource: "\(GlobalConst.ServerName)/bbs/write_comment_update.php", paramString: bodyString, referer: referer)
+    }
+
 }

@@ -30,15 +30,17 @@ class GlobalConst {
     static let MODIFY_MODE = 1
     static let REPLY_MODE = 2
     
-    static let POST_FILE = 1
-    static let POST_DATA = 2
+    static let POST_DATA = 1
+    static let POST_NOTICE = 2
+    static let GET_TOKEN = 3
     
     static let SCALE_SIZE = 600
     
     static let READ_ARTICLE = 1
     static let DELETE_ARTICLE = 2
     static let DELETE_COMMENT = 3
-    
+    static let DELETE_COMMENT_NOTICE = 4
+
     static let CENTER = 1
     static let COMMUNITY = 2
     

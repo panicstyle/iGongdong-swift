@@ -233,51 +233,22 @@ class ArticleWrite: UIViewController, UITextViewDelegate, UIImagePickerControlle
     // MARK: - HttpSessionRequestDelegate
 
     func httpSessionRequest(_ httpSessionRequest: HttpSessionRequest, didFinishLodingData data: Data) {
-        if httpSessionRequest.tag == GlobalConst.POST_FILE {
-            let str = String(data: data, encoding: .utf8) ?? ""
+        let str = String(data: data, encoding: .utf8) ?? ""
+        if Utils.numberOfMatches(str, regex: "<meta http-equiv=\"refresh\" content=\"0;") <= 0 {
+            var errMsg = Utils.findStringRegex(str, regex: "(?<=window.alert\\(\\\").*?(?=\\\")")
+            errMsg = "글 작성중 오류가 발생했습니다. 잠시후 다시 해보세요.[\(errMsg)]"
             
-            if Utils.numberOfMatches(str, regex: "fileNameArray\\[0\\] =") <= 0 {
-                var errMsg = Utils.findStringRegex(str, regex: "(?<=var message = ').*?(?=';)")
-                errMsg = Utils.replaceStringHtmlTag(str)
-                
-                let alert = UIAlertController(title: "입력된 내용이 없습니다.", message: errMsg, preferredStyle: .alert)
-                let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
-                alert.addAction(confirm)
-                DispatchQueue.main.sync {
-                    self.present(alert, animated: true, completion: nil)
-                }
-                return
-            }
-            if !parseAttachResult(str) {
-                let alert = UIAlertController(title: "글 작성 오류", message: "첨부파일에서 오류가 발생했습니다.", preferredStyle: .alert)
-                let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
-                alert.addAction(confirm)
-                DispatchQueue.main.sync {
-                    self.present(alert, animated: true, completion: nil)
-                }
-                return
-            }
+            let alert = UIAlertController(title: "글 작성 오류", message: errMsg, preferredStyle: .alert)
+            let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
+            alert.addAction(confirm)
             DispatchQueue.main.sync {
-                postDo()
+                self.present(alert, animated: true, completion: nil)
             }
-        } else {        // httpSessionRequest.tag == GlobalConst.POST_DATA
-            let str = String(data: data, encoding: .utf8) ?? ""
-            if Utils.numberOfMatches(str, regex: "<b>시스템 메세지입니다</b>") > 0 {
-                var errMsg = Utils.findStringRegex(str, regex: "(?<=<b>시스템 메세지입니다</b></font><br>).*?(?=<br>)")
-                errMsg = "글 작성중 오류가 발생했습니다. 잠시후 다시 해보세요.[\(errMsg)]"
-                
-                let alert = UIAlertController(title: "글 작성 오류", message: errMsg, preferredStyle: .alert)
-                let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
-                alert.addAction(confirm)
-                DispatchQueue.main.sync {
-                    self.present(alert, animated: true, completion: nil)
-                }
-                return
-            }
-            DispatchQueue.main.sync {
-                self.delegate?.articleWrite(self, didWrite: self)
-                self.navigationController?.popViewController(animated: true)
-            }
+            return
+        }
+        DispatchQueue.main.sync {
+            self.delegate?.articleWrite(self, didWrite: self)
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -286,20 +257,6 @@ class ArticleWrite: UIViewController, UITextViewDelegate, UIImagePickerControlle
     }
     
     // MARK: - User functions
-    
-    func parseAttachResult(_ str: String) -> Bool {
-        for i in 0...attachCount {
-            fileName[i] = Utils.findStringRegex(str, regex: "(?<=fileNameArray\\[.\\] = ').*?(?=';)")
-            fileMask[i] = Utils.findStringRegex(str, regex: "(?<=fileMaskArray\\[.\\] = ').*?(?=';)")
-            fileSize[i] = Utils.findStringRegex(str, regex: "(?<=fileSizeArray\\[.\\] = ).*?(?=;)")
-            
-            if fileName[i] == "" || fileMask[i] == "" || fileSize[i] == "" {
-                return false
-            }
-        }
-        
-        return true
-    }
     
     func textViewSetupView() {
         if textView.text == "내용을 입력하세요." {
@@ -362,39 +319,37 @@ class ArticleWrite: UIViewController, UITextViewDelegate, UIImagePickerControlle
     }
     
     private func postWithAttach() {
+        
+        let escContent: String = textView.text!
+        let escTitle: String  = textField.text!
+        
         let boundary = "0xKhTmLbOuNdArY"
         var body: Data = Data()
         
         // userEmail
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"userEmail\"\r\n\r\n".data(using:.utf8)!)
-        body.append("\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"number\"\r\n\r\n".data(using:.utf8)!)
+        body.append("\(boardNo)\r\n".data(using: .utf8)!)
         
         // userHomepage
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"userHomepage\"\r\n\r\n".data(using:.utf8)!)
-        body.append("\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"usetag\"\r\n\r\n".data(using:.utf8)!)
+        body.append("n\r\n".data(using: .utf8)!)
         
         // boardTitle
-        let boardTitle = textField.text
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"boardTitle\"\r\n\r\n".data(using:.utf8)!)
-        body.append("\(boardTitle!)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"subject\"\r\n\r\n".data(using:.utf8)!)
+        body.append("\(escTitle)\r\n".data(using: .utf8)!)
 
         // whatmode_uEdit
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"whatmode_uEdit\"\r\n\r\n".data(using:.utf8)!)
-        body.append("on\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"sample\"\r\n\r\n".data(using:.utf8)!)
+        body.append("\r\n".data(using: .utf8)!)
 
         // editContent
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"editContent\"\r\n\r\n".data(using:.utf8)!)
-        body.append("\r\n".data(using: .utf8)!)
-
-        // tagsName
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"tagsName\"\r\n\r\n".data(using:.utf8)!)
-        body.append("\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"content\"\r\n\r\n".data(using:.utf8)!)
+        body.append("\(escContent)\r\n".data(using: .utf8)!)
 
         attachCount = 0
         for i in 0...4 {
@@ -414,66 +369,53 @@ class ArticleWrite: UIViewController, UITextViewDelegate, UIImagePickerControlle
                 let imageData = image!.pngData()
 
                 body.append("--\(boundary)\r\n".data(using: .utf8)!)
-                body.append("Content-Disposition: form-data; name=\"file\(attachCount)\"; filename=\"\(imageFileName[i])\"\r\n".data(using:.utf8)!)
+                body.append("Content-Disposition: form-data; name=\"imgfile[]\"; filename=\"\(imageFileName[i])\"\r\n".data(using:.utf8)!)
                 body.append("Content-Type: application/octet-stream\r\n\r\n".data(using:.utf8)!)
                 body.append(imageData!)
                 body.append("\r\n".data(using: .utf8)!)
-                
+
+                body.append("--\(boundary)\r\n".data(using: .utf8)!)
+                body.append("Content-Disposition: form-data; name=\"file_text[]\"\r\n\r\n".data(using:.utf8)!)
+                body.append("\r\n".data(using: .utf8)!)
+
                 attachCount += 1
             }
         }
         
-        // subId
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"subId\"\r\n\r\n".data(using:.utf8)!)
-        body.append("sub01\r\n".data(using: .utf8)!)
-        
-        // mode
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"mode\"\r\n\r\n".data(using:.utf8)!)
-        body.append("attach\r\n".data(using: .utf8)!)
-
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        var resource = ""
+        if mode == GlobalConst.MODIFY_MODE {
+            resource = "\(GlobalConst.CafeName)/cafe.php?mode=edit&p2=&p1=\(commId)&sort=\(boardId)"
+        } else {
+            resource = "\(GlobalConst.CafeName)/cafe.php?mode=up&p2=&p1=\(commId)&sort=\(boardId)"
+        }
 
         let httpSessionRequest = HttpSessionRequest()
         httpSessionRequest.delegate = self
-        httpSessionRequest.tag = GlobalConst.POST_FILE
-        httpSessionRequest.requestWithMultiPart(resource: "\(GlobalConst.ServerName)/uploadManager", param: body, referer: "\(GlobalConst.ServerName)/board-edit.do", boundary: boundary)
+        httpSessionRequest.tag = GlobalConst.POST_DATA
+        httpSessionRequest.requestWithMultiPart(resource: resource, param: body, referer: resource, boundary: boundary)
     }
 
     private func postDo() {
-        
-        var command = "WRITE"
-        if mode == GlobalConst.MODIFY_MODE {
-            command = "MODIFY"
-        }
-        
-        var escContent: String = textView.text!
+        let escContent: String = textView.text!
         let escTitle: String  = textField.text!
         
-        escContent = escContent.replacingOccurrences(of: "\n", with: "<br />")
+//        escContent = escContent.replacingOccurrences(of: "\n", with: "<br />")
         
-        var strFileName = ""
-        var strFileMask = ""
-        var strFileSize = ""
+        let bodyString = "number=\(boardNo)&usetag=n&subject=\(escTitle)&content=\(escContent)"
         
-        for i in 0..<attachCount {
-            if i > 0 {
-                strFileName += "|"
-                strFileMask += "|"
-                strFileSize += "|"
-            }
-            strFileName += fileName[i]
-            strFileMask += fileMask[i]
-            strFileSize += fileMask[i]
+        var resource = ""
+        if mode == GlobalConst.MODIFY_MODE {
+            resource = "\(GlobalConst.CafeName)/cafe.php?mode=edit&p2=&p1=\(commId)&sort=\(boardId)"
+        } else {
+            resource = "\(GlobalConst.CafeName)/cafe.php?mode=up&p2=&p1=\(commId)&sort=\(boardId)"
         }
-    
-        let bodyString = "boardId=\(boardId)&page=1&categoryId=-1&boardNo=\(boardNo)&command=\(command)&htmlImage=%%2Fout&file_cnt=5&tag_yn=Y&thumbnailSize=50&boardWidth=710&defaultBoardSkin=default&boardBackGround_color=&boardBackGround_picture=&boardSerialBadNick=&boardSerialBadContent=&totalSize=20&serialBadNick=&serialBadContent=&fileTotalSize=0&simpleFileTotalSize=0+Bytes&serialFileName=&serialFileMask=&serialFileSize=&userPoint=2530&userEmail=&userHomepage=&boardPollFrom_time=&boardPollTo_time=&boardContent=\(escContent)&boardTitle=\(escTitle)&boardSecret_fg=N&boardEdit_fg=M&userNick=&userPw=&fileName=\(strFileName)&fileMask=\(strFileMask)&fileSize=\(strFileSize)&pollContent=&boardPoint=0&boardTop_fg=&totalsize=0&tag=0&tagsName="
         
         let httpSessionRequest = HttpSessionRequest()
         httpSessionRequest.delegate = self
         httpSessionRequest.tag = GlobalConst.POST_DATA
-        httpSessionRequest.requestWithParamString(httpMethod: "POST", resource: "\(GlobalConst.ServerName)/board-save.do", paramString: bodyString, referer: "\(GlobalConst.ServerName)/board-edit.do")
+        httpSessionRequest.requestWithParamString(httpMethod: "POST", resource: resource, paramString: bodyString, referer: resource)
     }
     
     func scaleToFitWidth(_ image: UIImage) -> UIImage {

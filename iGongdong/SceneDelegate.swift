@@ -89,17 +89,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
             dUserInfo = nil
             return
         }
+        let commId = userInfo["commId"] as! String
         let boardId = userInfo["boardId"] as! String
         let boardNo = userInfo["boardNo"] as! String
+        let PNotice = userInfo["PNotice"] as! String
+        var isPNotice = 0
+        if PNotice == "pnotice" {
+            isPNotice = 1
+        }
 
-        if boardId == "" || boardNo == "" {
+        if commId == "" || boardId == "" || boardNo == "" {
             dUserInfo = nil
             return
         }
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let articleView = storyboard.instantiateViewController(withIdentifier: "ArticleView") as! ArticleView
+        articleView.commId = boardId
         articleView.boardId = boardId
         articleView.boardNo = boardNo
+        articleView.isPNotice = isPNotice
+        articleView.boardType = GlobalConst.CAFE_TYPE_NORMAL
         articleView.delegate = self;
         articleView.selectedRow = -1
         let navigationController = self.window?.rootViewController as! UINavigationController

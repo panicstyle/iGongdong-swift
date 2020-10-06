@@ -58,14 +58,14 @@ class LoginToService: NSObject, HttpSessionRequestDelegate {
 
     func PushRegister() {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let fullPath = paths[0].appendingPathComponent("token.dat")
+        let fullPath = paths[0].appendingPathComponent("setToken.dat")
         var token = ""
         do {
             let fileData = try Data(contentsOf: fullPath)
             let setTokenStorage = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(fileData) as! SetTokenStorage
             token = String(setTokenStorage.token)
         } catch {
-            print("Couldn't read token.dat file")
+            print("Couldn't read setToken.dat file")
         }
         
         if token == "" {

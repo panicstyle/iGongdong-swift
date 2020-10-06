@@ -15,6 +15,7 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
     
     @IBOutlet var tableView : UITableView!
     @IBOutlet var bannerView: GADBannerView!
+    @IBOutlet var newArticle: UIBarButtonItem!
     var boardTitle: String = ""
     var boardType = 0
     var commId: String = ""
@@ -33,6 +34,10 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
                                                name: UIContentSizeCategory.didChangeNotification, object: nil)
         
         self.title = boardTitle
+        
+        if boardType != GlobalConst.CAFE_TYPE_NORMAL {
+            newArticle.isEnabled = false
+        }
         
         // GoogleMobileAds
         self.bannerView.adUnitID = GlobalConst.AdUnitID

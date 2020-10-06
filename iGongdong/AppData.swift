@@ -146,7 +146,7 @@ struct MainData {
             print("-----\n\(matchstr)\n-----")
             
             let code = Utils.findStringRegex(matchstr, regex: "(?<=value=\\\").*?(?=\\\")")
-            let title = Utils.replaceOnlyHtmlTag(matchstr)
+            let title = Utils.removeHtmlTag(matchstr)
             
             if code == "" {
                 continue
@@ -213,7 +213,7 @@ struct BoardData {
             let link = Utils.findStringRegex(matchstr, regex: "(?<=<a href=\\\").*?(?=\\\")")
             let boardId = Utils.findStringRegex(link, regex: "(?<=&sort=).*?(?=$)")
                         
-            let title = Utils.replaceOnlyHtmlTag(matchstr)
+            let title = Utils.removeHtmlTag(matchstr)
             print("title=\(title)")
             var isNew = 0
             if Utils.numberOfMatches(matchstr, regex: "images/new_s.gif") > 0 {
