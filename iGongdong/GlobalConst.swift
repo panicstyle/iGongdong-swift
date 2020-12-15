@@ -16,7 +16,7 @@ class GlobalConst {
     static let CafeName = "http://cafe.gongdong.or.kr"
     static let ServerName = "http://www.gongdong.or.kr"
     static let PushName = "http://www.gongdong.or.kr"
-    static let AdUnitID = "ca-app-pub-9032980304073628/1382252941"
+    static let AdUnitID = "ca-app-pub-9032980304073628/7128082761"
     
     static let LOGIN_TO_SERVER = 1
     static let PUSH_REGISTER = 2
