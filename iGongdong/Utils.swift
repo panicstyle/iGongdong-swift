@@ -82,4 +82,23 @@ class Utils {
             alpha: CGFloat(1.0)
         )
     }
+    
+    static func addBoldText(fullString: String, boldPartOfString: String, baseFont: UIFont, boldFont: UIFont) -> NSAttributedString {
+
+        let baseFontAttribute = [NSAttributedString.Key.font : baseFont]
+        let boldFontAttribute = [NSAttributedString.Key.font : boldFont]
+
+        let attributedString = NSMutableAttributedString(string: fullString, attributes: baseFontAttribute)
+
+        attributedString.addAttributes(boldFontAttribute, range: NSRange(fullString.range(of: boldPartOfString) ?? fullString.startIndex..<fullString.endIndex, in: fullString))
+
+        return attributedString
+    }
+    
+    static func addBoldText(fullString: String, boldFont: UIFont) -> NSAttributedString {
+        let boldFontAttribute = [NSAttributedString.Key.font : boldFont]
+        let attributedString = NSMutableAttributedString(string: fullString, attributes: boldFontAttribute)
+        return attributedString
+    }
+
 }

@@ -198,6 +198,7 @@
 			buildConfigurationList = EC86FCF624A754A500E2D337 /* Build configuration list for PBXNativeTarget "iGongdong" */;
 			buildPhases = (
 				BC622ECA47D197B4ADAFEC52 /* [CP] Check Pods Manifest.lock */,
+				22AF1BD4DD308324BE4EC856 /* [CP] Prepare Artifacts */,
 				EC86FCD324A754A400E2D337 /* Sources */,
 				EC86FCD424A754A400E2D337 /* Frameworks */,
 				EC86FCD524A754A400E2D337 /* Resources */,
@@ -291,6 +292,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		22AF1BD4DD308324BE4EC856 /* [CP] Prepare Artifacts */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iGongdong/Pods-iGongdong-artifacts-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Prepare Artifacts";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iGongdong/Pods-iGongdong-artifacts-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iGongdong/Pods-iGongdong-artifacts.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		391D37EABE0775E9C2AEBE09 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -544,14 +562,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = iGongdong/iGongdong.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 8PG9C7Q5V8;
 				INFOPLIST_FILE = "$(SRCROOT)/iGongdong/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.24.0;
+				MARKETING_VERSION = 3.25.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.panicstyle.iGongdong;
 				PRODUCT_NAME = iGongdong;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -568,14 +586,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = iGongdong/iGongdong.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 8PG9C7Q5V8;
 				INFOPLIST_FILE = "$(SRCROOT)/iGongdong/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.24.0;
+				MARKETING_VERSION = 3.25.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.panicstyle.iGongdong;
 				PRODUCT_NAME = iGongdong;
 				SWIFT_VERSION = 5.0;

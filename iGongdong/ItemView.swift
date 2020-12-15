@@ -85,6 +85,7 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
         let isRe = item.isRe
         
         let bodyFont = UIFont.preferredFont(forTextStyle: .body)
+        let bodyBoldFont = UIFont.preferredFont(forTextStyle: .body).bold()
         let footnoteFont = UIFont.preferredFont(forTextStyle: .footnote)
 
         if mode == 1 || boardType == GlobalConst.CAFE_TYPE_ING {
@@ -183,7 +184,11 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
                     }
                 }
 
-                textSubject.font = bodyFont
+                if (item.isNotice == 1 || item.isPNotice == 1) {
+                    textSubject.font = bodyBoldFont
+                } else {
+                    textSubject.font = bodyFont
+                }
                 labelName.font = footnoteFont
                 labelComment.font = footnoteFont
             } else {
