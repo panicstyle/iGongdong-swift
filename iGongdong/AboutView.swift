@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class AboutView : UIViewController {
+class AboutView : CommonView {
     
     //MARK: Properties
 
@@ -17,9 +17,6 @@ class AboutView : UIViewController {
     
     override func viewDidLoad() {
         self.title = "앱정보"
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.contentSizeCategoryDidChangeNotification),
-                                               name: UIContentSizeCategory.didChangeNotification, object: nil)
         
         let bodyFont = UIFont.preferredFont(forTextStyle: .body)
         textView.font = bodyFont
@@ -30,7 +27,7 @@ class AboutView : UIViewController {
         }
     }
     
-    @objc func contentSizeCategoryDidChangeNotification() {
+    @objc override func contentSizeCategoryDidChangeNotification() {
         let bodyFont = UIFont.preferredFont(forTextStyle: .body)
         textView.font = bodyFont
     }

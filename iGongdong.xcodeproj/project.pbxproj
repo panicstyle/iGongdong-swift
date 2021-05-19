@@ -21,6 +21,8 @@
 		EC86FCE724A754A400E2D337 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC86FCE524A754A400E2D337 /* LaunchScreen.storyboard */; };
 		EC86FCF224A754A500E2D337 /* iGongdongTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86FCF124A754A500E2D337 /* iGongdongTests.swift */; };
 		EC86FCFD24A78EE800E2D337 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86FCFC24A78EE800E2D337 /* MainView.swift */; };
+		EC89B1CA2653496E006446D4 /* CommonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC89B1C92653496E006446D4 /* CommonView.swift */; };
+		EC89B1CC26534979006446D4 /* CommonBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC89B1CB26534979006446D4 /* CommonBannerView.swift */; };
 		ECA7C1A8250D12C50036D825 /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA7C1A7250D12C50036D825 /* ItemView.swift */; };
 		ECB08150252AE8A4006AC182 /* ArticleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB0814F252AE8A4006AC182 /* ArticleData.swift */; };
 		ECC42FF2250F1CA6006E9F67 /* LinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC42FF1250F1CA6006E9F67 /* LinkView.swift */; };
@@ -71,6 +73,8 @@
 		EC86FCF124A754A500E2D337 /* iGongdongTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iGongdongTests.swift; sourceTree = "<group>"; };
 		EC86FCF324A754A500E2D337 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC86FCFC24A78EE800E2D337 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		EC89B1C92653496E006446D4 /* CommonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonView.swift; sourceTree = "<group>"; };
+		EC89B1CB26534979006446D4 /* CommonBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonBannerView.swift; sourceTree = "<group>"; };
 		ECA7C1A7250D12C50036D825 /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
 		ECB0814F252AE8A4006AC182 /* ArticleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleData.swift; sourceTree = "<group>"; };
 		ECC42FF1250F1CA6006E9F67 /* LinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkView.swift; sourceTree = "<group>"; };
@@ -150,31 +154,23 @@
 		EC86FCD924A754A400E2D337 /* iGongdong */ = {
 			isa = PBXGroup;
 			children = (
-				ECCB6F63251B5EC900DCEF71 /* AboutView.swift */,
+				EC89B1CD26536F79006446D4 /* View */,
+				EC89B1C626534930006446D4 /* Common */,
 				ECD9B71524ECC1A700B1B978 /* AppData.swift */,
 				EC86FCDA24A754A400E2D337 /* AppDelegate.swift */,
 				ECB0814F252AE8A4006AC182 /* ArticleData.swift */,
-				ECC42FF3250F32D6006E9F67 /* ArticleView.swift */,
-				ECF7BB852511E19E0081AE5B /* ArticleWrite.swift */,
 				EC86FCE324A754A400E2D337 /* Assets.xcassets */,
-				ECD7FF4024F6B78D0008F0F3 /* BoardView.swift */,
-				ECEBD21B252CB93500ECC455 /* CalView.swift */,
-				EC62F8402518CF6B00452C93 /* CommentWrite.swift */,
 				ECDA63B92519AEAB0053B8A1 /* DBInterface.swift */,
 				ECD9B71724ED007300B1B978 /* GlobalConst.swift */,
 				ECD9B71124ECB40B00B1B978 /* HttpSessionRequest.swift */,
 				EC7FF15E251A09420020E1CE /* iGongdong.entitlements */,
 				EC86FCE824A754A400E2D337 /* Info.plist */,
 				ECD733C225296B0B00F91CB2 /* ItemData.swift */,
-				ECA7C1A7250D12C50036D825 /* ItemView.swift */,
 				ECF7BB872512EFE50081AE5B /* KeyboardObserver.swift */,
 				EC86FCE524A754A400E2D337 /* LaunchScreen.storyboard */,
-				ECC42FF1250F1CA6006E9F67 /* LinkView.swift */,
 				EC2911C8250B431600E61269 /* LoginToService.swift */,
 				EC86FCE024A754A400E2D337 /* Main.storyboard */,
-				EC86FCFC24A78EE800E2D337 /* MainView.swift */,
 				EC7FF16B251A0CB20020E1CE /* SceneDelegate.swift */,
-				EC2911C6250B355300E61269 /* SetView.swift */,
 				EC62F8462518D8BD00452C93 /* String+Extionsion.swift */,
 				EC33A47D2515C66700DCC8FB /* Utils.swift */,
 			);
@@ -188,6 +184,32 @@
 				EC86FCF324A754A500E2D337 /* Info.plist */,
 			);
 			path = iGongdongTests;
+			sourceTree = "<group>";
+		};
+		EC89B1C626534930006446D4 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				EC89B1C92653496E006446D4 /* CommonView.swift */,
+				EC89B1CB26534979006446D4 /* CommonBannerView.swift */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		EC89B1CD26536F79006446D4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				ECCB6F63251B5EC900DCEF71 /* AboutView.swift */,
+				ECC42FF3250F32D6006E9F67 /* ArticleView.swift */,
+				ECF7BB852511E19E0081AE5B /* ArticleWrite.swift */,
+				ECD7FF4024F6B78D0008F0F3 /* BoardView.swift */,
+				ECEBD21B252CB93500ECC455 /* CalView.swift */,
+				EC62F8402518CF6B00452C93 /* CommentWrite.swift */,
+				ECA7C1A7250D12C50036D825 /* ItemView.swift */,
+				ECC42FF1250F1CA6006E9F67 /* LinkView.swift */,
+				EC86FCFC24A78EE800E2D337 /* MainView.swift */,
+				EC2911C6250B355300E61269 /* SetView.swift */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -388,6 +410,7 @@
 				ECD9B71624ECC1A700B1B978 /* AppData.swift in Sources */,
 				EC86FCFD24A78EE800E2D337 /* MainView.swift in Sources */,
 				ECD9B71824ED007300B1B978 /* GlobalConst.swift in Sources */,
+				EC89B1CC26534979006446D4 /* CommonBannerView.swift in Sources */,
 				EC62F8472518D8BD00452C93 /* String+Extionsion.swift in Sources */,
 				EC33A47E2515C66700DCC8FB /* Utils.swift in Sources */,
 				ECF7BB862511E19E0081AE5B /* ArticleWrite.swift in Sources */,
@@ -395,6 +418,7 @@
 				ECF7BB882512EFE50081AE5B /* KeyboardObserver.swift in Sources */,
 				EC2911C7250B355300E61269 /* SetView.swift in Sources */,
 				ECB08150252AE8A4006AC182 /* ArticleData.swift in Sources */,
+				EC89B1CA2653496E006446D4 /* CommonView.swift in Sources */,
 				ECC42FF2250F1CA6006E9F67 /* LinkView.swift in Sources */,
 				EC7FF16C251A0CB20020E1CE /* SceneDelegate.swift in Sources */,
 				ECC42FF4250F32D6006E9F67 /* ArticleView.swift in Sources */,
@@ -571,7 +595,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.25.0;
+				MARKETING_VERSION = 3.26.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.panicstyle.iGongdong;
 				PRODUCT_NAME = iGongdong;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -595,7 +619,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.25.0;
+				MARKETING_VERSION = 3.26.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.panicstyle.iGongdong;
 				PRODUCT_NAME = iGongdong;
 				SWIFT_VERSION = 5.0;

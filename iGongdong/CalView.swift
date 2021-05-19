@@ -9,7 +9,7 @@
 import Foundation
 import WebKit
 
-class CalView: UIViewController, UIScrollViewDelegate, WKUIDelegate, WKNavigationDelegate, HttpSessionRequestDelegate {
+class CalView: CommonView, UIScrollViewDelegate, WKUIDelegate, WKNavigationDelegate {
 
     //MARK: Properties
     @IBOutlet var mainView : UIScrollView!
@@ -18,7 +18,6 @@ class CalView: UIViewController, UIScrollViewDelegate, WKUIDelegate, WKNavigatio
     var boardId: String = ""
     var boardTitle: String = ""
     var link: String = ""
-    var config: WKWebViewConfiguration?
     
     var imageView: UIImageView?
     
@@ -42,7 +41,7 @@ class CalView: UIViewController, UIScrollViewDelegate, WKUIDelegate, WKNavigatio
     
     //MARK: - HttpSessionRequestDelegate
     
-    func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, didFinishLodingData data: Data) {
+    override func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, didFinishLodingData data: Data) {
         let str = String(data: data, encoding: .utf8) ?? ""
         var content = ""
         if self.commId == "center" {
@@ -68,9 +67,6 @@ class CalView: UIViewController, UIScrollViewDelegate, WKUIDelegate, WKNavigatio
         }
     }
 
-    func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, withError error: Error?) {
-    }
-    
     //MARK: - User functions
     
     @objc func linkMenu() {

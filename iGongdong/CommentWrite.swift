@@ -13,7 +13,7 @@ protocol CommentWriteDelegate {
     func commentWrite(_ commentWrite: CommentWrite, didWrite sender: Any)
 }
 
-class CommentWrite: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, HttpSessionRequestDelegate {
+class CommentWrite: CommonView, UITextViewDelegate, UINavigationControllerDelegate {
     
     //MARK: Properties
     
@@ -49,9 +49,6 @@ class CommentWrite: UIViewController, UITextViewDelegate, UINavigationController
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.contentSizeCategoryDidChangeNotification),
-                                               name: UIContentSizeCategory.didChangeNotification, object: nil)
-        
         self.navigationItem.leftBarButtonItem = self.leftButton
         self.navigationItem.rightBarButtonItem = self.rightButton
         
@@ -94,14 +91,9 @@ class CommentWrite: UIViewController, UITextViewDelegate, UINavigationController
         keyboardObserver = nil
     }
     
-    @objc func contentSizeCategoryDidChangeNotification() {
+    @objc override func contentSizeCategoryDidChangeNotification() {
         let bodyFont = UIFont.preferredFont(forTextStyle: .body)
         textView.font = bodyFont
-    }
-    
-    deinit {
-        // perform the deinitialization
-        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - TextViewDelegate
@@ -125,7 +117,7 @@ class CommentWrite: UIViewController, UITextViewDelegate, UINavigationController
     
     // MARK: - HttpSessionRequestDelegate
     
-    func httpSessionRequest(_ httpSessionRequest: HttpSessionRequest, didFinishLodingData data: Data) {
+    override func httpSessionRequest(_ httpSessionRequest: HttpSessionRequest, didFinishLodingData data: Data) {
         if httpSessionRequest.tag == GlobalConst.POST_DATA {
             let str = String(data: data, encoding: .utf8) ?? ""
             if Utils.numberOfMatches(str, regex: "<meta http-equiv=\"refresh\" content=\"0;") <= 0 {
@@ -177,11 +169,6 @@ class CommentWrite: UIViewController, UITextViewDelegate, UINavigationController
             self.navigationController?.popViewController(animated: true)
         }
     }
-    
-    func httpSessionRequest(_ httpSessionRequest: HttpSessionRequest, withError error: Error?) {
-
-    }
-    
     
     // MARK: - User functions
     

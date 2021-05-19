@@ -11,51 +11,31 @@ import os.log
 import WebKit
 import GoogleMobileAds
 
-class MainView : UIViewController, UITableViewDelegate, UITableViewDataSource, HttpSessionRequestDelegate, LoginToServiceDelegate, SetViewDelegate {
+class MainView : CommonBannerView, UITableViewDelegate, UITableViewDataSource, SetViewDelegate {
     
     //MARK: Properties
     
     @IBOutlet var tableView : UITableView!
-    @IBOutlet var bannerView: GADBannerView!
     
     var mainData = MainData()
-    var config: WKWebViewConfiguration?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.contentSizeCategoryDidChangeNotification),
-                                               name: UIContentSizeCategory.didChangeNotification, object: nil)
-        
         self.title = "공동육아와 공동체교육"
-        
-        // GoogleMobileAds
-        self.bannerView.adUnitID = GlobalConst.AdUnitID
-        self.bannerView.rootViewController = self
-        self.bannerView.load(GADRequest())
-                
-        let loginToService = LoginToService()
-        loginToService.delegate = self
-        loginToService.Login()
         
         let db = DBInterface()
         db.delete()
+        
+        let loginToService = LoginToService()
+        loginToService.delegate = self
+        loginToService.Login()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    @objc func contentSizeCategoryDidChangeNotification() {
+    @objc override func contentSizeCategoryDidChangeNotification() {
         self.tableView.reloadData()
     }
 
-    deinit {
-        // perform the deinitialization
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     //MARK: - Table view data source
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -162,7 +142,7 @@ class MainView : UIViewController, UITableViewDelegate, UITableViewDataSource, H
     
     //MARK: - HttpSessionRequestDelegate
     
-    func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, didFinishLodingData data: Data) {
+    override func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, didFinishLodingData data: Data) {
         let str = String(data: data, encoding: .utf8) ?? ""
         print("str = \(str.count)")
         mainData = MainData(result: str)
@@ -184,37 +164,18 @@ class MainView : UIViewController, UITableViewDelegate, UITableViewDataSource, H
         }
     }
 
-    func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, withError error: Error?) {
-    }
-
     //MARK: - LoginToServiceDelegate
     
-    func loginToService(_ loginToService: LoginToService, loginWithSuccess result: String) {
+    override func loginToService(_ loginToService: LoginToService, loginWithSuccess result: String) {
         print("LoginToService Success")
         loadData()
     }
     
-    func loginToService(_ loginToService: LoginToService, loginWithFail result: String) {
+    override func loginToService(_ loginToService: LoginToService, loginWithFail result: String) {
         print("LoginToService fail")
         loadData()
     }
     
-    func loginToService(_ loginToService: LoginToService, logoutWithSuccess result: String) {
-        
-    }
-    
-    func loginToService(_ loginToService: LoginToService, logoutWithFail result: String) {
-        
-    }
-    
-    func loginToService(_ loginToService: LoginToService, pushWithSuccess result: String) {
-        
-    }
-    
-    func loginToService(_ loginToService: LoginToService, pushWithFail result: String) {
-        
-    }
-
     //MARK: - SetViewDelegate
 
     func setView(_ setView: SetView, didSaved sender: Any) {

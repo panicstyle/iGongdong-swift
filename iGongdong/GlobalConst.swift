@@ -10,8 +10,8 @@ import Foundation
 
 class GlobalConst {
     static var userId = ""
-    static var swPush = 0
-    static var swNotice = 0
+//    static var swPush = 0
+//    static var swNotice = 0
     
     static let CafeName = "http://cafe.gongdong.or.kr"
     static let ServerName = "http://www.gongdong.or.kr"
@@ -52,4 +52,12 @@ class GlobalConst {
     static let CAFE_TYPE_APPLY = 5
     static let CAFE_TYPE_ING = 6
     static let CAFE_TYPE_CAL = 9
+    
+    static let USER_ID = "userId"
+    static let USER_PW = "userPw"
+    static let PUSH = "push"
+    static let PUSH_NOTICE = "pushNotice"
+    static let SYSTEM_SYNC = "systemSync"
+    static let DARK_MODE = "darkMode"
+    static let TOKEN = "token"
 }

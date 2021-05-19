@@ -21,20 +21,15 @@ class LoginToService: NSObject, HttpSessionRequestDelegate {
     var delegate: LoginToServiceDelegate?
     var userId : String = ""
     var userPwd : String = ""
-    var swPush : NSNumber = 1
+    var push : Bool = true
+    var notice : Bool = true
     
     func Login() {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let fullPath = paths[0].appendingPathComponent("set.dat")
-        do {
-            let fileData = try Data(contentsOf: fullPath)
-            let setStorage = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(fileData) as! SetStorage
-            userId = String(setStorage.userId)
-            userPwd = String(setStorage.userPwd)
-            swPush = setStorage.swPush
-        } catch {
-            print("Couldn't read set.dat file")
-        }
+        let defaults = UserDefaults.standard
+        userId = defaults.object(forKey: GlobalConst.USER_ID) as? String ?? ""
+        userPwd = defaults.object(forKey: GlobalConst.USER_PW) as? String ?? ""
+        push = defaults.bool(forKey: GlobalConst.PUSH)
+        notice = defaults.bool(forKey: GlobalConst.PUSH_NOTICE)
         
         let escUserId = String(userId.addingPercentEncoding( withAllowedCharacters: .urlQueryAllowed) ?? "")
         
@@ -57,16 +52,8 @@ class LoginToService: NSObject, HttpSessionRequestDelegate {
     }
 
     func PushRegister() {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let fullPath = paths[0].appendingPathComponent("setToken.dat")
-        var token = ""
-        do {
-            let fileData = try Data(contentsOf: fullPath)
-            let setTokenStorage = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(fileData) as! SetTokenStorage
-            token = String(setTokenStorage.token)
-        } catch {
-            print("Couldn't read setToken.dat file")
-        }
+        let defaults = UserDefaults.standard
+        let token = defaults.object(forKey: GlobalConst.TOKEN) as? String ?? ""
         
         if token == "" {
             self.delegate?.loginToService(self, pushWithFail: "")
@@ -79,12 +66,12 @@ class LoginToService: NSObject, HttpSessionRequestDelegate {
         }
         
         var pushYN = "Y"
-        if GlobalConst.swPush == 0 {
+        if !push {
             pushYN = "N"
         }
         
         var noticeYN = "Y"
-        if GlobalConst.swNotice == 0 {
+        if !notice {
             noticeYN = "N"
         }
         let jsonObject = ["type": "iOS", "push_yn": pushYN, "push_notice": noticeYN, "uuid": token, "userid": GlobalConst.userId]
@@ -103,7 +90,6 @@ class LoginToService: NSObject, HttpSessionRequestDelegate {
 //            print (returnString)
             if !returnString.contains("<title>오류안내 페이지") {
                 GlobalConst.userId = userId
-                GlobalConst.swPush = 1
                 self.delegate?.loginToService(self, loginWithSuccess: "")
             } else {
                 self.delegate?.loginToService(self, loginWithFail: "")

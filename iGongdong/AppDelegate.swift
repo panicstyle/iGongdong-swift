@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var window: UIWindow?
     var dUserInfo: [AnyHashable: Any]?
+    var commonViews: [Int : Any] = [Int : Any]()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -38,6 +39,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         GADMobileAds.sharedInstance().start(completionHandler: nil)
 
+        /*
+         이번 버전에서 저장된 로그인 및 token 정보를 새로운 저장방식으로 저장
+         */
+        let defaults = UserDefaults.standard
+        
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let fullPath = paths[0].appendingPathComponent("set.dat")
+        do {
+            let fileData = try Data(contentsOf: fullPath)
+            let setStorage = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(fileData) as! SetStorage
+            
+            let userId = String(setStorage.userId)
+            let userPw = String(setStorage.userPwd)
+            let swPush = setStorage.swPush == 1 ? true : false
+            let swNotice = setStorage.swNotice == 1 ? true : false
+            
+            defaults.set(userId, forKey: GlobalConst.USER_ID)
+            defaults.set(userPw, forKey: GlobalConst.USER_PW)
+            defaults.set(swPush, forKey: GlobalConst.PUSH)
+            defaults.set(swNotice, forKey: GlobalConst.PUSH_NOTICE)
+            defaults.set(true, forKey: GlobalConst.SYSTEM_SYNC)
+            defaults.set(true, forKey: GlobalConst.DARK_MODE)
+            
+            let filePathName = "/\(fullPath)"
+            try FileManager.default.removeItem(atPath: filePathName)
+
+        } catch {
+            print("Couldn't read set.dat file")
+        }
+        
+        let fullPath2 = paths[0].appendingPathComponent("token.dat")
+        do {
+            let fileData = try Data(contentsOf: fullPath2)
+            let setTokenStorage = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(fileData) as! SetTokenStorage
+            let token = String(setTokenStorage.token)
+            
+            defaults.set(token, forKey: GlobalConst.TOKEN)
+
+            let filePathName = "/\(fullPath2)"
+            try FileManager.default.removeItem(atPath: filePathName)
+
+        } catch {
+            print("Couldn't read token.dat file")
+        }
+        
         dUserInfo = launchOptions?[UIApplication.LaunchOptionsKey.remoteNotification] as? [AnyHashable : Any]
         if dUserInfo != nil {
             moveToViewController()

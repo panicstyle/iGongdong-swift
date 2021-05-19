@@ -14,12 +14,11 @@ protocol ArticleViewDelegate {
     func articleView(_ articleView: ArticleView, didDelete row: Int)
 }
 
-class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource, HttpSessionRequestDelegate, WKUIDelegate, WKNavigationDelegate, UIDocumentInteractionControllerDelegate, ArticleWriteDelegate, CommentWriteDelegate, LoginToServiceDelegate {
+class ArticleView: CommonBannerView, UITableViewDelegate, UITableViewDataSource, WKUIDelegate, WKNavigationDelegate, UIDocumentInteractionControllerDelegate, ArticleWriteDelegate, CommentWriteDelegate {
 
     //MARK: Properties
     
     @IBOutlet var tableView : UITableView!
-    @IBOutlet var bannerView: GADBannerView!
     @IBOutlet var btnMenu: UIBarButtonItem!
     var commId: String = ""
     var boardId: String = ""
@@ -39,7 +38,6 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
     var webLinkType: Int = 0
     var webLink: String = ""
     var doic: UIDocumentInteractionController?
-    var config: WKWebViewConfiguration?
     var editableSubject = ""
     var editableContent = ""
     var selectedCommentRow = -1
@@ -48,9 +46,6 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.contentSizeCategoryDidChangeNotification),
-                                               name: UIContentSizeCategory.didChangeNotification, object: nil)
-        
         if #available(iOS 12.0, *) {
             if traitCollection.userInterfaceStyle == .light {
                 print("Light mode")
@@ -86,15 +81,10 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
         }
     }
 
-    @objc func contentSizeCategoryDidChangeNotification() {
+    @objc override func contentSizeCategoryDidChangeNotification() {
         let baseUrl = URL(string: GlobalConst.ServerName)
         self.webView?.loadHTMLString(strHtml, baseURL: baseUrl)
         self.tableView.reloadData()
-    }
-    
-    deinit {
-        // perform the deinitialization
-        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Table view data source
@@ -384,7 +374,7 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
 
     //MARK: - HttpSessionRequestDelegate
     
-    func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, didFinishLodingData data: Data) {
+    override func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, didFinishLodingData data: Data) {
         if httpSessionRequest.tag == GlobalConst.READ_ARTICLE {
             readArticleFinish(httpSessionRequest, data)
         } else if httpSessionRequest.tag == GlobalConst.DELETE_ARTICLE {
@@ -392,9 +382,6 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
         } else {
             deleteCommentFinish(httpSessionRequest, data)
         }
-    }
-
-    func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, withError error: Error?) {
     }
 
     //MARK: - ArticleWriteDelegate
@@ -415,28 +402,16 @@ class ArticleView: UIViewController, UITableViewDelegate, UITableViewDataSource,
     
     //MARK: - LoginToServiceDelegate
     
-    func loginToService(_ loginToService: LoginToService, loginWithSuccess result: String) {
+    override func loginToService(_ loginToService: LoginToService, loginWithSuccess result: String) {
         // Load the data.
         loadData()
     }
     
-    func loginToService(_ loginToService: LoginToService, loginWithFail result: String) {
+    override func loginToService(_ loginToService: LoginToService, loginWithFail result: String) {
         let alert = UIAlertController(title: "로그인 오류", message: "설정에서 로그인 정보를 확인하세요.", preferredStyle: .alert)
         let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
         alert.addAction(confirm)
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    func loginToService(_ loginToService: LoginToService, logoutWithSuccess result: String) {
-    }
-    
-    func loginToService(_ loginToService: LoginToService, logoutWithFail result: String) {
-    }
-    
-    func loginToService(_ loginToService: LoginToService, pushWithSuccess result: String) {
-    }
-    
-    func loginToService(_ loginToService: LoginToService, pushWithFail result: String) {        
     }
     
     //MARK: - Private Methods

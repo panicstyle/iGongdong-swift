@@ -13,7 +13,7 @@ protocol ArticleWriteDelegate {
     func articleWrite(_ articleWrite: ArticleWrite, didWrite sender: Any)
 }
 
-class ArticleWrite: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, HttpSessionRequestDelegate {
+class ArticleWrite: CommonView, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     //MARK: Properties
     
@@ -61,9 +61,6 @@ class ArticleWrite: UIViewController, UITextViewDelegate, UIImagePickerControlle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.contentSizeCategoryDidChangeNotification),
-                                               name: UIContentSizeCategory.didChangeNotification, object: nil)
-        
         self.navigationItem.leftBarButtonItem = self.leftButton
         self.navigationItem.rightBarButtonItem = self.rightButton
         
@@ -108,7 +105,7 @@ class ArticleWrite: UIViewController, UITextViewDelegate, UIImagePickerControlle
         keyboardObserver = nil
     }
     
-    @objc func contentSizeCategoryDidChangeNotification() {
+    @objc override func contentSizeCategoryDidChangeNotification() {
         let bodyFont = UIFont.preferredFont(forTextStyle: .body)
         
         textField.font = bodyFont
@@ -163,11 +160,6 @@ class ArticleWrite: UIViewController, UITextViewDelegate, UIImagePickerControlle
                 self.present(alert, animated: true, completion: nil)
             }
         }
-    }
-    
-    deinit {
-        // perform the deinitialization
-        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - TextViewDelegate
@@ -232,7 +224,7 @@ class ArticleWrite: UIViewController, UITextViewDelegate, UIImagePickerControlle
 
     // MARK: - HttpSessionRequestDelegate
 
-    func httpSessionRequest(_ httpSessionRequest: HttpSessionRequest, didFinishLodingData data: Data) {
+    override func httpSessionRequest(_ httpSessionRequest: HttpSessionRequest, didFinishLodingData data: Data) {
         let str = String(data: data, encoding: .utf8) ?? ""
         if Utils.numberOfMatches(str, regex: "<meta http-equiv=\"refresh\" content=\"0;") <= 0 {
             var errMsg = Utils.findStringRegex(str, regex: "(?<=window.alert\\(\\\").*?(?=\\\")")
@@ -250,10 +242,6 @@ class ArticleWrite: UIViewController, UITextViewDelegate, UIImagePickerControlle
             self.delegate?.articleWrite(self, didWrite: self)
             self.navigationController?.popViewController(animated: true)
         }
-    }
-    
-    func httpSessionRequest(_ httpSessionRequest: HttpSessionRequest, withError error: Error?) {
-        
     }
     
     // MARK: - User functions

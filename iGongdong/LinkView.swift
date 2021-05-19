@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class LinkView: UIViewController, UIScrollViewDelegate, WKUIDelegate, WKNavigationDelegate, HttpSessionRequestDelegate {
+class LinkView: CommonView, UIScrollViewDelegate, WKUIDelegate, WKNavigationDelegate {
     
     //MARK: Properties
     @IBOutlet var mainView : UIScrollView!
@@ -17,7 +17,6 @@ class LinkView: UIViewController, UIScrollViewDelegate, WKUIDelegate, WKNavigati
     var linkName: String = ""
     var type: Int = 0
     var link: String = ""
-    var config: WKWebViewConfiguration?
     
     var imageView: UIImageView?
     
@@ -58,7 +57,7 @@ class LinkView: UIViewController, UIScrollViewDelegate, WKUIDelegate, WKNavigati
     
     //MARK: - HttpSessionRequestDelegate
     
-    func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, didFinishLodingData data: Data) {
+    override func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, didFinishLodingData data: Data) {
         DispatchQueue.main.sync {
             imageView = UIImageView.init(frame: CGRect(x: 0, y: 0, width: mainView.bounds.size.width, height: mainView.bounds.size.height))
             guard let uImageView = imageView else {
@@ -76,9 +75,6 @@ class LinkView: UIViewController, UIScrollViewDelegate, WKUIDelegate, WKNavigati
         }
     }
 
-    func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, withError error: Error?) {
-    }
-    
     //MARK: - User functions
     
     @objc func linkMenu() {

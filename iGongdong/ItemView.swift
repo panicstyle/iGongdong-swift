@@ -9,12 +9,11 @@
 import UIKit
 import GoogleMobileAds
 
-class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, HttpSessionRequestDelegate, ArticleViewDelegate, ArticleWriteDelegate, LoginToServiceDelegate {
+class ItemView: CommonBannerView, UITableViewDelegate, UITableViewDataSource, ArticleViewDelegate, ArticleWriteDelegate {
 
     //MARK: Properties
     
     @IBOutlet var tableView : UITableView!
-    @IBOutlet var bannerView: GADBannerView!
     @IBOutlet var newArticle: UIBarButtonItem!
     var boardTitle: String = ""
     var boardType = 0
@@ -29,9 +28,6 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.contentSizeCategoryDidChangeNotification),
-                                               name: UIContentSizeCategory.didChangeNotification, object: nil)
         
         self.title = boardTitle
         
@@ -48,15 +44,10 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
         loadData()
     }
     
-    @objc func contentSizeCategoryDidChangeNotification() {
+    @objc override func contentSizeCategoryDidChangeNotification() {
         self.tableView.reloadData()
     }
 
-    deinit {
-        // perform the deinitialization
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     // MARK: - Table view data source
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -309,7 +300,7 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
     
     //MARK: - HttpSessionRequestDelegate
     
-    func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, didFinishLodingData data: Data) {
+    override func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, didFinishLodingData data: Data) {
         let str = String(data: data, encoding: .utf8) ?? ""
         if Utils.numberOfMatches(str, regex: "window.alert\\(\\\"권한이 없습니다") > 0 || Utils.numberOfMatches(str, regex: "window.alert\\(\\\"로그인 하세요") > 0 {
             print("권한오류")
@@ -353,7 +344,7 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
         }
     }
 
-    func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, withError error: Error?) {
+    override func httpSessionRequest(_ httpSessionRequest:HttpSessionRequest, withError error: Error?) {
         let msg = "권한이 없거나 로그인 정보를 확인하세요."
         let alert = UIAlertController(title: "오류", message: msg, preferredStyle: .alert)
         let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
@@ -381,27 +372,15 @@ class ItemView: UIViewController, UITableViewDelegate, UITableViewDataSource, Ht
     
     //MARK: - LoginToServiceDelegate
     
-    func loginToService(_ loginToService: LoginToService, loginWithSuccess result: String) {
+    override func loginToService(_ loginToService: LoginToService, loginWithSuccess result: String) {
         loadData()
     }
     
-    func loginToService(_ loginToService: LoginToService, loginWithFail result: String) {
+    override func loginToService(_ loginToService: LoginToService, loginWithFail result: String) {
         let alert = UIAlertController(title: "로그인 오류", message: "설정에서 로그인 정보를 확인하세요.", preferredStyle: .alert)
         let confirm = UIAlertAction(title: "확인", style: .default) { (action) in }
         alert.addAction(confirm)
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    func loginToService(_ loginToService: LoginToService, logoutWithSuccess result: String) {
-    }
-    
-    func loginToService(_ loginToService: LoginToService, logoutWithFail result: String) {
-    }
-    
-    func loginToService(_ loginToService: LoginToService, pushWithSuccess result: String) {
-    }
-    
-    func loginToService(_ loginToService: LoginToService, pushWithFail result: String) {        
     }
     
     //MARK: - Private Methods
